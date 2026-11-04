@@ -1,5 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import fontkit from "@pdf-lib/fontkit";
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFPage } from "pdf-lib";
 import QRCode from "qrcode";
 import { shapeArabic } from "./arabic";
@@ -35,14 +36,26 @@ async function loadFonts(doc: PDFDocument): Promise<{
 }> {
   // خط عربي (Tajawal) من public/fonts — يُضمَّن في ملف الـPDF
   const dir = path.join(process.cwd(), "public", "fonts");
+  const readFirst = async (names: string[]) => {
+    for (const name of names) {
+      try {
+        return await fs.readFile(path.join(dir, name));
+      } catch {
+        // جرّب الاسم التالي
+      }
+    }
+    throw new Error(`لم يُعثر على خط عربي في ${dir} (${names.join(" / ")})`);
+  };
+
   try {
     const [reg, bold] = await Promise.all([
-      fs.readFile(path.join(dir, "Tajawal-Regular.ttf")),
-      fs.readFile(path.join(dir, "Tajawal-Bold.ttf")),
+      readFirst(["Amiri-Regular.ttf", "Tajawal-Regular.ttf", "tajawal.ttf"]),
+      readFirst(["Amiri-Bold.ttf", "Tajawal-Bold.ttf", "tajawal-bold.ttf"]),
     ]);
+    // subset:true يسقط معظم الحروف العربية لهذا الخط في قارئات PDF، فنضمّن الخط كاملًا
     return {
-      regular: await doc.embedFont(new Uint8Array(reg), { subset: true }),
-      bold: await doc.embedFont(new Uint8Array(bold), { subset: true }),
+      regular: await doc.embedFont(new Uint8Array(reg), { subset: false }),
+      bold: await doc.embedFont(new Uint8Array(bold), { subset: false }),
     };
   } catch {
     // احتياطي: خط لاتيني (قد لا يدعم العربية) — يمنع فشل إصدار الشهادة
@@ -95,6 +108,8 @@ export async function generateCertificatePdf(
   input: CertificatePdfInput,
 ): Promise<Uint8Array> {
   const doc = await PDFDocument.create();
+  // مطلوب لتضمين خطوط TTF عربية داخل ملف الـPDF
+  doc.registerFontkit(fontkit);
   const page = doc.addPage([A4_LANDSCAPE.width, A4_LANDSCAPE.height]);
   const { regular, bold } = await loadFonts(doc);
 

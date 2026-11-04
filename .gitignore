@@ -44,3 +44,9 @@ next-env.d.ts
 # أدوات/جلسات محلية
 .freebuff/
 threads/
+
+# Local Netlify folder
+.netlify
+
+# أسرار محلية
+.secrets/
