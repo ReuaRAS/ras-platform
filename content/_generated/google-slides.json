@@ -1,0 +1,82 @@
+{
+  "mechanic/guide": {
+    "label": "الدليل الشامل",
+    "presentation_id": "1W4hvfz70p8KfrpJ0kNWNRT-7pWykqI1NGVbK0u9nCJs",
+    "pdf_url": "/content/mechanic/guide.pdf",
+    "slide_titles": [],
+    "bytes": 213204,
+    "status": "ok"
+  },
+  "mechanic/field-guide": {
+    "label": "دورة موجه ميداني",
+    "presentation_id": "1oYNkhFoTgywQuFhbThq6cOlJrO7utBGLsbXCh-hcSbo",
+    "pdf_url": "/content/mechanic/field-guide.pdf",
+    "slide_titles": [],
+    "bytes": 211492,
+    "status": "ok"
+  },
+  "mechanic/modify-supply": {
+    "label": "دورة تعديل وتزويد",
+    "presentation_id": "1GVtF_vdUvCT_D0gVmkZFGQq6m6lr2ocY17u1K9h5Vac",
+    "pdf_url": "/content/mechanic/modify-supply.pdf",
+    "slide_titles": [],
+    "bytes": 357807,
+    "status": "ok"
+  },
+  "mechanic/field-supervisor": {
+    "label": "دورة مشرف ميداني",
+    "presentation_id": "1NHX3TxFxqQkvkin7ANcBwOyS-pVejY5o1ujw01Tnhfs",
+    "pdf_url": "/content/mechanic/field-supervisor.pdf",
+    "slide_titles": [],
+    "bytes": 187220,
+    "status": "ok"
+  },
+  "mechanic/general-supervisor": {
+    "label": "دورة مشرف عام",
+    "presentation_id": "1BhqqXGBrqLHhPJG6smX8okJfsA0TNX-6KIjzNEJyceQ",
+    "pdf_url": "/content/mechanic/general-supervisor.pdf",
+    "slide_titles": [],
+    "bytes": 170832,
+    "status": "ok"
+  },
+  "public-security/deck-1": {
+    "label": "عرض 1",
+    "presentation_id": "1LKeY6Ny9dJpyqbDr4VQ6Go92i3D3TBN3k6BQyZly-mM",
+    "pdf_url": "/content/public-security/deck-1.pdf",
+    "slide_titles": [],
+    "bytes": 901144,
+    "status": "ok"
+  },
+  "public-security/deck-2": {
+    "label": "عرض 2",
+    "presentation_id": "1FmPAvSEZvVvCeS83wYn3paGk2SJzabc_3THbY1e-AI0",
+    "pdf_url": "/content/public-security/deck-2.pdf",
+    "slide_titles": [],
+    "bytes": 675161,
+    "status": "ok"
+  },
+  "public-security/deck-3": {
+    "label": "عرض 3",
+    "presentation_id": "12q2FsxUv1OIqjCexIsICAEX_fNtrBb1ciRcgrHZb3Rw",
+    "pdf_url": null,
+    "slide_titles": [],
+    "bytes": 0,
+    "status": "failed:401"
+  },
+  "public-security/deck-4": {
+    "label": "عرض 4",
+    "presentation_id": "1n4ax4fP0iAhk228UP7DSZBw-xuI51uQ_keRzamO9LNk",
+    "pdf_url": null,
+    "slide_titles": [],
+    "bytes": 0,
+    "status": "failed:401"
+  },
+  "public-security/deck-5": {
+    "label": "عرض 5",
+    "presentation_id": "1IUFnKNFErKvl8TkKOcdZugjnHhBDG7hBfOTz5MxoCUc",
+    "pdf_url": null,
+    "slide_titles": [],
+    "bytes": 0,
+    "status": "failed:401"
+  }
+}
