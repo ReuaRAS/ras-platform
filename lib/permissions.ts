@@ -154,6 +154,12 @@ export const ADMIN_NAV: {
     permission: "results.read",
   },
   {
+    href: "/admin/practice",
+    label: "إحصاءات التدريب",
+    icon: "🎯",
+    permission: "results.read",
+  },
+  {
     href: "/admin/certificates",
     label: "الشهادات",
     icon: "🎫",
