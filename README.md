@@ -221,14 +221,28 @@ node scripts/sync-google-slides.mjs # تنزيل عروض Google Slides كـ PDF
 
 ### Netlify
 
+المشروع مربوط حاليًا بمستودع GitHub (`ReuaRAS/ras-platform`) على Netlify، فأي
+`git push` على فرع `master` يُطلق بناءً جديدًا ونشرًا تلقائيًا على
+`https://ras-sectors.netlify.app`. من جهازك: `git push origin master`.
+
+لإعادة الربط من الصفر:
+
 1. ارفع المستودع إلى GitHub.
 2. Netlify → **Add new site → Import an existing project** → اختر المستودع.
 3. إعدادات البناء تُقرأ من `netlify.toml`:
    - Build: `npm run build` — Publish: `.next` — Plugin: `@netlify/plugin-nextjs`.
-4. **Site settings → Environment variables**: أضف نفس متغيرات `.env.local`
+4. **Project configuration → Environment variables**: أضف نفس متغيرات `.env.local`
    (مع `NEXT_PUBLIC_APP_URL` = رابط الموقع النهائي).
 5. بعد النشر: أضف رابط الموقع في **Supabase → Authentication → URL Configuration**
    (Site URL + Redirect URLs) حتى تعمل الجلسات.
+6. للنشر اليدوي عند الحاجة: `netlify deploy --build --prod`.
+
+### فحص المسار على الاستضافة
+
+`node --env-file=.env.local .secrets/prod-smoke.mjs` ينشئ اختبارًا تجريبيًا على
+بيئة الإنتاج، يمشي المسار (بدء → تصحيح → شهادة → تحقق → PDF) ويحذف كل ما أنشأه
+(الاختبار والأسئلة والمحاولة والشهادة وملف PDF). لا تشغّله إلا وأنت موافق على
+كتابة صفوف مؤقتة في قاعدة الإنتاج.
 
 ### تحديث رقم الشهادة في QR
 
