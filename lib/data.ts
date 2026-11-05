@@ -5,6 +5,7 @@ import { getContentSector } from "@/lib/content";
 import type { ContentSector, ContentSlide } from "@/lib/content/types";
 import { SECTORS, getSectorMeta, type SectorMeta } from "@/lib/sectors";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createPublicSupabase } from "@/lib/supabase/public";
 import type {
   Announcement,
@@ -308,26 +309,37 @@ export async function getRecruitment(sector: Sector): Promise<RecruitmentView> {
 /* الاختبارات                                                          */
 /* ------------------------------------------------------------------ */
 
+/**
+ * جدول `tests` لا يقرأه anon (لا سياسة قراءة عامة، لأن بنك الأسئلة سري)،
+ * فتُقرأ الاختبارات بسيرفر service_role في السيرفر فقط.
+ */
+function testsClient() {
+  try {
+    return createAdminClient();
+  } catch {
+    return null;
+  }
+}
+
 export async function getTests(sector: Sector): Promise<Test[]> {
   if (isContentId(sector.id)) return [];
-  const sb = await supabase();
-  const rows = sb
-    ? await safeRows<Test>(() =>
-        sb
-          .from("tests")
-          .select("*")
-          .eq("sector_id", sector.id)
-          .eq("is_active", true)
-          .order("created_at"),
-      )
-    : null;
+  const sb = testsClient();
+  if (!sb) return [];
+  const rows = await safeRows<Test>(() =>
+    sb
+      .from("tests")
+      .select("*")
+      .eq("sector_id", sector.id)
+      .eq("is_active", true)
+      .order("created_at"),
+  );
   return rows ?? [];
 }
 
 /** اختبار مرتبط بدورة معيّنة (أو null) */
 export async function getTestForCourse(sector: Sector, courseId: string): Promise<Test | null> {
   if (isContentId(courseId)) return null;
-  const sb = await supabase();
+  const sb = testsClient();
   if (!sb) return null;
   const rows = await safeRows<Test>(() =>
     sb

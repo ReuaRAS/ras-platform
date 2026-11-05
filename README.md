@@ -118,6 +118,8 @@ future/                       بنية فارغة للمراحل 8–13
 | `/sectors/[slug]/ranks` | سلّم الرتب ومتطلبات النقاط |
 | `/sectors/[slug]/leaderboard` | صدارة أعضاء القطاع بالنقاط |
 | `/sectors/[slug]/help` | الأسئلة الشائعة للقطاع (من جدول `faq`) |
+| `/sectors/[slug]/practice` | وضع التدريب: اختبارات القطاع المتاحة للتدرّب |
+| `/sectors/[slug]/practice/[testId]` | جلسة تدريب عشوائية مع تصحيح فوري وإظهار الإجابة الصحيحة |
 | `/sectors/[slug]/store` | متجر النقاط + عرض الرصيد بمعرّف Discord |
 | `/sectors/[slug]/certificates` | شهادات القطاع |
 | `/leaderboard` | لوحة الصدارة (أعلى 20 لكل قطاع، معرّفات مختصرة) |
@@ -293,7 +295,7 @@ node scripts/sync-google-slides.mjs # تنزيل عروض Google Slides كـ PDF
 | --- | --- |
 | 8.1 XP والرُتب | ✅ (`add_xp` + `xp_levels` + `ranks` + `member_ranks`) |
 | 8.2 لوحة الصدارة | ✅ `/leaderboard` + `/sectors/[slug]/leaderboard` |
-| 8.3 وضع التدريب (Practice) | ⏳ الجدول `practice_attempts` موجود، والواجهة لم تُبنَ |
+| 8.3 وضع التدريب (Practice) | ✅ `/sectors/[slug]/practice` — تصحيح فوري بلا شهادة ولا نقاط |
 | 8.4 مركز المساعدة / FAQ | ✅ `/sectors/[slug]/help` + `/admin/faq` |
 | 8.5 البحث الشامل (⌘K) | ⏳ لم يُبنَ |
 | 8.6 جرس الإشعارات | ✅ |

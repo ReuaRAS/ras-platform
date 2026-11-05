@@ -50,6 +50,22 @@ export const submitAttemptSchema = z.object({
 
 export type SubmitAttemptInput = z.infer<typeof submitAttemptSchema>;
 
+/** وضع التدريب: تصحيح بلا شهادة ولا نقاط ولا تسجيل بيانات شخصية. */
+export const practiceSubmitSchema = z.object({
+  testId: z.string().uuid("معرّف الاختبار غير صالح"),
+  answers: z
+    .array(
+      z.object({
+        questionId: z.string().uuid(),
+        choiceId: z.string().uuid().nullable(),
+      }),
+    )
+    .min(1, "لا توجد إجابات مرسلة")
+    .max(200),
+});
+
+export type PracticeSubmitInput = z.infer<typeof practiceSubmitSchema>;
+
 export const revokeCertificateSchema = z.object({
   certificateId: z.string().uuid(),
   reason: z.string().trim().min(5, "سبب الإلغاء مطلوب (5 أحرف على الأقل)").max(300),
