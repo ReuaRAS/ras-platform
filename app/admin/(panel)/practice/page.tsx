@@ -119,7 +119,11 @@ export default async function AdminPracticeStatsPage() {
       <PageHeader
         title="إحصاءات التدريب"
         description="محاولات وضع التدريب فقط — لا تُصدر شهادة ولا تمنح نقاطًا. تُحلَّل آخر 2000 محاولة."
-      />
+      >
+        <a href="/api/admin/practice/export" className="btn btn-ghost !px-3 !py-1.5 text-xs">
+          ⬇️ تصدير CSV
+        </a>
+      </PageHeader>
 
       {error ? <Alert tone="error">{error.message}</Alert> : null}
 
