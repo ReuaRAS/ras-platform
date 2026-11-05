@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { markAllNotificationsRead } from "@/lib/admin/actions-store";
 import { createServerSupabase } from "@/lib/supabase/server";
 
 /**
@@ -64,9 +65,19 @@ export default async function NotificationBell() {
             ))}
           </ul>
         )}
-        <p className="mt-1 border-t border-white/[0.06] px-2 pt-2 text-[10px] text-[#475569]">
-          الإشعارات تُدار من المرحلة 13.
-        </p>
+        <div className="mt-1 flex items-center justify-between gap-2 border-t border-white/[0.06] px-2 pt-2">
+          <Link href="/admin/notifications" className="text-[10px] font-bold text-[var(--sector-light)]">
+            كل الإشعارات ←
+          </Link>
+          {unread > 0 ? (
+            <form action={markAllNotificationsRead}>
+              <input type="hidden" name="redirect_to" value="/admin" />
+              <button type="submit" className="text-[10px] text-[#64748b] hover:text-white">
+                تحديد الكل كمقروء
+              </button>
+            </form>
+          ) : null}
+        </div>
       </div>
     </details>
   );

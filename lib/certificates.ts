@@ -143,36 +143,25 @@ export async function issueCertificate(params: IssueParams): Promise<IssueResult
   return { certificateNo, verifyUrl, pdfUrl, expiresAt, warning };
 }
 
-/** إضافة نقاط XP — بنية تحتية للمرحلة 8 (لا تُفشل العملية). */
+/**
+ * إضافة نقاط XP عبر RPC `add_xp` الذرية (تُحدّث الرصيد والمستوى وتُسجّل الحركة).
+ * لا تُفشل العملية الأساسية عند الخطأ.
+ */
 export async function addXp(
   admin: SupabaseClient,
   discordId: string,
   sectorId: string,
   amount: number,
+  reason = "certificate_issued",
 ): Promise<void> {
   try {
-    const { data: existing } = await admin
-      .from("member_xp")
-      .select("id, total_xp")
-      .eq("discord_id", discordId)
-      .maybeSingle();
-
-    if (existing) {
-      await admin
-        .from("member_xp")
-        .update({
-          total_xp: Number(existing.total_xp ?? 0) + amount,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", existing.id);
-    } else {
-      await admin.from("member_xp").insert({
-        discord_id: discordId,
-        sector_id: sectorId,
-        total_xp: amount,
-      });
-    }
+    await admin.rpc("add_xp", {
+      p_discord_id: discordId,
+      p_sector: sectorId,
+      p_amount: amount,
+      p_reason: reason,
+    });
   } catch {
-    // المرحلة 8 — تُعامل كإضافة تجميلية
+    // XP إضافة غير حرجة
   }
 }

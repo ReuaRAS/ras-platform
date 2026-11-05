@@ -144,6 +144,108 @@ export type Slide = {
   image?: string;
 };
 
+export type MemberXp = {
+  id: string;
+  discord_id: string;
+  sector_id: string | null;
+  total_xp: number;
+  level: number;
+  updated_at: string;
+};
+
+export type XpEvent = {
+  id: string;
+  discord_id: string;
+  sector_id: string | null;
+  amount: number;
+  reason: string | null;
+  created_at: string;
+};
+
+export type XpLevel = {
+  level: number;
+  min_xp: number;
+  title: string;
+};
+
+export type AttendanceStatus = "present" | "late" | "absent" | "excused";
+
+export type AttendanceRecord = {
+  id: string;
+  sector_id: string | null;
+  discord_id: string;
+  status: AttendanceStatus;
+  attendance_date: string;
+  checked_in_at: string;
+  note: string | null;
+};
+
+export type Rank = {
+  id: string;
+  sector_id: string;
+  code: string;
+  title: string;
+  sort_order: number;
+  min_xp: number;
+  requirements: Record<string, unknown> | null;
+};
+
+export type Promotion = {
+  id: string;
+  sector_id: string | null;
+  discord_id: string;
+  from_rank: string | null;
+  to_rank: string;
+  status: "pending" | "approved" | "rejected";
+  note: string | null;
+  requested_by: string | null;
+  decided_by: string | null;
+  decided_at: string | null;
+  approved_at: string | null;
+  created_at: string;
+};
+
+export type StoreItem = {
+  id: string;
+  sector_id: string | null;
+  name: string;
+  description: string | null;
+  price: number;
+  stock: number | null;
+  is_active: boolean;
+  created_at: string;
+};
+
+export type StoreOrder = {
+  id: string;
+  sector_id: string | null;
+  item_id: string;
+  discord_id: string;
+  price_paid: number;
+  status: "pending" | "fulfilled" | "cancelled";
+  fulfilled_at: string | null;
+  created_at: string;
+};
+
+export type DiscordEvent = {
+  id: string;
+  sector_id: string | null;
+  event_type: string;
+  payload: Record<string, unknown>;
+  created_at: string;
+};
+
+export type NotificationRow = {
+  id: string;
+  sector_id: string | null;
+  user_id: string | null;
+  title: string;
+  body: string | null;
+  href: string | null;
+  is_read: boolean;
+  created_at: string;
+};
+
 export const ROLE_LABELS: Record<string, string> = {
   viewer: "مشاهد",
   sector_admin: "قائد قطاع",

@@ -29,7 +29,17 @@ export type Permission =
   | "announcements.write"
   | "recruitment.write"
   | "audit.read"
-  | "sector.seed";
+  | "sector.seed"
+  | "members.read"
+  | "members.write"
+  | "attendance.read"
+  | "attendance.write"
+  | "promotions.read"
+  | "promotions.write"
+  | "store.read"
+  | "store.write"
+  | "discord.read"
+  | "notifications.write";
 
 const ALL: Permission[] = [
   "laws.read",
@@ -48,14 +58,59 @@ const ALL: Permission[] = [
   "recruitment.write",
   "audit.read",
   "sector.seed",
+  "members.read",
+  "members.write",
+  "attendance.read",
+  "attendance.write",
+  "promotions.read",
+  "promotions.write",
+  "store.read",
+  "store.write",
+  "discord.read",
+  "notifications.write",
 ];
 
 export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
   viewer: [],
   sector_admin: ALL.filter((p) => p !== "audit.read"),
-  sector_vice: ALL.filter((p) => p !== "laws.delete" && p !== "audit.read"),
-  sector_trainer: ["laws.read", "courses.write", "questions.write", "tests.write"],
-  sector_reviewer: ["laws.read", "results.read", "results.review", "certificates.read"],
+  sector_vice: [
+    "laws.read",
+    "laws.write",
+    "rewards.write",
+    "courses.write",
+    "questions.write",
+    "tests.write",
+    "results.read",
+    "results.review",
+    "certificates.read",
+    "certificates.revoke",
+    "schedule.write",
+    "announcements.write",
+    "recruitment.write",
+    "members.read",
+    "attendance.read",
+    "attendance.write",
+    "promotions.read",
+    "store.read",
+    "discord.read",
+  ],
+  sector_trainer: [
+    "laws.read",
+    "courses.write",
+    "questions.write",
+    "tests.write",
+    "members.read",
+    "attendance.read",
+    "attendance.write",
+  ],
+  sector_reviewer: [
+    "laws.read",
+    "results.read",
+    "results.review",
+    "certificates.read",
+    "members.read",
+    "promotions.read",
+  ],
   super_admin: ALL,
 };
 
@@ -108,6 +163,27 @@ export const ADMIN_NAV: {
     icon: "📣",
     permission: "announcements.write",
   },
+  { href: "/admin/members", label: "الأعضاء والنقاط", icon: "👥", permission: "members.read" },
+  {
+    href: "/admin/attendance",
+    label: "الحضور",
+    icon: "✅",
+    permission: "attendance.read",
+  },
+  {
+    href: "/admin/promotions",
+    label: "الترقيات والرتب",
+    icon: "🎖️",
+    permission: "promotions.read",
+  },
+  { href: "/admin/store", label: "متجر النقاط", icon: "🛒", permission: "store.read" },
+  {
+    href: "/admin/notifications",
+    label: "الإشعارات",
+    icon: "🔔",
+    permission: "notifications.write",
+  },
+  { href: "/admin/discord", label: "Discord", icon: "🤖", permission: "discord.read" },
   {
     href: "/admin/audit-logs",
     label: "سجل العمليات",
