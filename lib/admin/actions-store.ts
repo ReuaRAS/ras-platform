@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { revalidatePublic } from "@/lib/revalidate";
 import { redirect } from "next/navigation";
 import { logAudit } from "@/lib/audit";
 import { requirePermission, requireStaff } from "@/lib/auth/guard";
@@ -89,6 +90,7 @@ export async function saveStoreItem(fd: FormData): Promise<void> {
     price: payload.price,
   });
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: id ? "تم تحديث العنصر." : "تمت إضافة العنصر." });
 }
 
@@ -104,6 +106,7 @@ export async function deleteStoreItem(fd: FormData): Promise<void> {
 
   await audit(ctx, "store.item_delete", "store_item", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حذف العنصر." });
 }
 
@@ -126,6 +129,7 @@ export async function purchaseForMember(fd: FormData): Promise<void> {
 
   await audit(ctx, "store.purchase", "store_order", `${discordId}:${itemId}`);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم خصم النقاط وإنشاء الطلب." });
 }
 
@@ -151,6 +155,7 @@ export async function fulfillOrder(fd: FormData): Promise<void> {
 
   await audit(ctx, "store.fulfill", "store_order", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم تسليم الطلب." });
 }
 
@@ -166,6 +171,7 @@ export async function cancelOrder(fd: FormData): Promise<void> {
 
   await audit(ctx, "store.cancel", "store_order", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم إلغاء الطلب وإرجاع النقاط والمخزون." });
 }
 
@@ -199,6 +205,7 @@ export async function sendNotification(fd: FormData): Promise<void> {
     recipients: data,
   });
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: `تم إرسال الإشعار إلى ${data ?? 0} مستخدمًا.` });
 }
 

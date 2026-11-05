@@ -1,22 +1,28 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "ras-splash-shown";
 
-/** شاشة البداية — تظهر مرة واحدة لكل جلسة، مع زر تخطي. */
+/**
+ * شاشة البداية — تظهر مرة واحدة لكل جلسة على الصفحة الرئيسية فقط،
+ * ولمدة قصيرة (900ms) حتى لا تبدو المنصة بطيئة أو معلّقة عند أول زيارة.
+ */
 export default function SplashScreen() {
+  const pathname = usePathname();
   const [visible, setVisible] = useState(false);
   const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (pathname !== "/") return;
     if (sessionStorage.getItem(STORAGE_KEY) === "1") return;
     setVisible(true);
-    const timer = setTimeout(() => dismiss(), 2600);
+    const timer = setTimeout(() => dismiss(), 900);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [pathname]);
 
   function dismiss() {
     setLeaving(true);

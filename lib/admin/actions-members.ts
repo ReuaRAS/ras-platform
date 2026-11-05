@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { revalidatePublic } from "@/lib/revalidate";
 import { redirect } from "next/navigation";
 import { logAudit } from "@/lib/audit";
 import { requirePermission } from "@/lib/auth/guard";
@@ -81,6 +82,7 @@ export async function adjustXp(fd: FormData): Promise<void> {
 
   await audit(ctx, "xp.adjust", "member_xp", discordId, { amount, reason });
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: amount > 0 ? `تمت إضافة ${amount} نقطة.` : `تم خصم ${Math.abs(amount)} نقطة.` });
 }
 
@@ -115,6 +117,7 @@ export async function markAttendance(fd: FormData): Promise<void> {
 
   await audit(ctx, "attendance.mark", "attendance_record", `${discordId}:${date}`, { status });
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم تسجيل الحضور.", month: date.slice(0, 7) });
 }
 
@@ -136,6 +139,7 @@ export async function clearAttendance(fd: FormData): Promise<void> {
 
   await audit(ctx, "attendance.clear", "attendance_record", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حذف سجل الحضور." });
 }
 
@@ -170,6 +174,7 @@ export async function saveRank(fd: FormData): Promise<void> {
 
   await audit(ctx, id ? "rank.update" : "rank.create", "rank", id ?? code);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: id ? "تم تحديث الرتبة." : "تمت إضافة الرتبة." });
 }
 
@@ -185,6 +190,7 @@ export async function deleteRank(fd: FormData): Promise<void> {
 
   await audit(ctx, "rank.delete", "rank", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حذف الرتبة." });
 }
 
@@ -212,6 +218,7 @@ export async function requestPromotion(fd: FormData): Promise<void> {
 
   await audit(ctx, "promotion.request", "promotion", `${discordId}:${toRank}`);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم تسجيل طلب الترقية (قيد المراجعة)." });
 }
 
@@ -280,5 +287,6 @@ export async function decidePromotion(fd: FormData): Promise<void> {
 
   await audit(ctx, `promotion.${decision}`, "promotion", id, { to_rank: promotion.to_rank });
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: decision === "approved" ? "تم اعتماد الترقية." : "تم رفض طلب الترقية." });
 }

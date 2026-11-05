@@ -5,8 +5,9 @@ import "./globals.css";
 const tajawal = Tajawal({
   variable: "--font-tajawal",
   subsets: ["arabic", "latin"],
-  weight: ["300", "400", "500", "700", "800", "900"],
+  weight: ["400", "700", "800"],
   display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {

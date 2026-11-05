@@ -2,10 +2,11 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import SectorHeader from "@/components/SectorHeader";
 import { getSectorBySlug } from "@/lib/data";
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createPublicSupabase } from "@/lib/supabase/public";
 import type { Rank } from "@/lib/types";
 
-export const dynamic = "force-dynamic";
+/** ISR: يُخزَّن HTML ويُحدَّث تلقائيًا كل 5 دقائق أو فورًا بعد أي تعديل إداري. */
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,
@@ -23,7 +24,7 @@ export default async function RanksPage({ params }: { params: Promise<{ slug: st
   if (!sector) notFound();
 
   let ranks: Rank[] = [];
-  const supabase = await createServerSupabase();
+  const supabase = createPublicSupabase();
   if (supabase) {
     const { data } = await supabase
       .from("ranks")

@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { revalidatePublic } from "@/lib/revalidate";
 import { redirect } from "next/navigation";
 import { logAudit } from "@/lib/audit";
 import { requirePermission } from "@/lib/auth/guard";
@@ -84,6 +85,7 @@ export async function saveFaq(fd: FormData): Promise<void> {
 
   revalidatePath("/admin/faq");
   revalidatePath("/sectors", "layout");
+  revalidatePublic();
   back(path, { msg: id ? "تم تحديث السؤال." : "تمت إضافة السؤال." });
 }
 
@@ -102,5 +104,6 @@ export async function deleteFaq(fd: FormData): Promise<void> {
   await audit(ctx, "faq.delete", id);
   revalidatePath("/admin/faq");
   revalidatePath("/sectors", "layout");
+  revalidatePublic();
   back(path, { msg: "تم حذف السؤال." });
 }

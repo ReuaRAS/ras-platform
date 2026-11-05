@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePublic } from "@/lib/revalidate";
 import { issueCertificate } from "@/lib/certificates";
 import { logAudit } from "@/lib/audit";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -199,6 +200,9 @@ export async function POST(req: Request) {
     },
     ipAddress: ip,
   });
+
+  // شهادة/نقاط جديدة ⇒ الصفحات المخزَّنة (الشهادات والصدارة) صارت قديمة.
+  revalidatePublic();
 
   return NextResponse.json({
     score,

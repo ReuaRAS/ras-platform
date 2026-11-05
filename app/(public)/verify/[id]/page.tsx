@@ -3,7 +3,7 @@ import CertificateCard from "@/components/CertificateCard";
 import { getCertificateByNo, getSectors } from "@/lib/data";
 import { APP_URL } from "@/lib/supabase/env";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "التحقق من شهادة",

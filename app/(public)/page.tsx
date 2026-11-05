@@ -3,7 +3,8 @@ import GlassCard from "@/components/GlassCard";
 import SectorCard from "@/components/SectorCard";
 import { getSectors } from "@/lib/data";
 
-export const dynamic = "force-dynamic";
+/** ISR: يُخزَّن HTML ويُحدَّث تلقائيًا كل 5 دقائق أو فورًا بعد أي تعديل إداري. */
+export const revalidate = 300;
 
 const FEATURES = [
   {

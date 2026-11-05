@@ -5,7 +5,7 @@ import { getContentSector } from "@/lib/content";
 import type { ContentSector, ContentSlide } from "@/lib/content/types";
 import { SECTORS, getSectorMeta, type SectorMeta } from "@/lib/sectors";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
-import { createServerSupabase } from "@/lib/supabase/server";
+import { createPublicSupabase } from "@/lib/supabase/public";
 import type {
   Announcement,
   Certificate,
@@ -40,8 +40,12 @@ async function safeRows<T>(
   }
 }
 
+/**
+ * عميل القراءة العامة بدون كوكيز: شرط أساسي لتصيير الصفحات مسبقًا (ISR).
+ * كل الكتابة تمر عبر Server Actions بعميل service_role.
+ */
 async function supabase() {
-  return createServerSupabase();
+  return createPublicSupabase();
 }
 
 function fallbackSector(meta: SectorMeta): Sector {

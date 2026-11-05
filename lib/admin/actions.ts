@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { revalidatePublic } from "@/lib/revalidate";
 import { redirect } from "next/navigation";
 import { logAudit } from "@/lib/audit";
 import { requirePermission } from "@/lib/auth/guard";
@@ -91,6 +92,7 @@ export async function saveLaw(fd: FormData): Promise<void> {
     law_code: payload.law_code,
   });
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: id ? "تم تحديث القانون." : "تم إضافة القانون." });
 }
 
@@ -110,6 +112,7 @@ export async function deleteLaw(fd: FormData): Promise<void> {
 
   await audit(ctx, "law.delete", "sector_law", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حذف القانون." });
 }
 
@@ -130,6 +133,7 @@ export async function seedSectorDefaults(fd: FormData): Promise<void> {
 
   await audit(ctx, "sector.seed", "sector", sectorId, { source });
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم نسخ القوانين والمكافآت من القطاع المرجعي." });
 }
 
@@ -163,6 +167,7 @@ export async function saveReward(fd: FormData): Promise<void> {
 
   await audit(ctx, id ? "reward.update" : "reward.create", "sector_reward", id ?? payload.reward_code);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: id ? "تم تحديث المكافأة." : "تم إضافة المكافأة." });
 }
 
@@ -182,6 +187,7 @@ export async function deleteReward(fd: FormData): Promise<void> {
 
   await audit(ctx, "reward.delete", "sector_reward", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حذف المكافأة." });
 }
 
@@ -226,6 +232,7 @@ export async function saveRecruitment(fd: FormData): Promise<void> {
 
   await audit(ctx, "recruitment.update", "recruitment_info", sectorId);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حفظ بيانات التوظيف." });
 }
 
@@ -271,6 +278,7 @@ export async function saveCourse(fd: FormData): Promise<void> {
 
   await audit(ctx, id ? "course.update" : "course.create", "course", id ?? payload.slug);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: id ? "تم تحديث الدورة." : "تم إضافة الدورة." });
 }
 
@@ -286,6 +294,7 @@ export async function deleteCourse(fd: FormData): Promise<void> {
 
   await audit(ctx, "course.delete", "course", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حذف الدورة." });
 }
 
@@ -313,6 +322,7 @@ export async function saveCourseSlides(fd: FormData): Promise<void> {
 
   await audit(ctx, "course.slides_update", "course", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حفظ السلايدات." });
 }
 
@@ -349,6 +359,7 @@ export async function saveTest(fd: FormData): Promise<void> {
 
   await audit(ctx, id ? "test.update" : "test.create", "test", id ?? row.title);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: id ? "تم تحديث الاختبار." : "تم إضافة الاختبار." });
 }
 
@@ -364,6 +375,7 @@ export async function deleteTest(fd: FormData): Promise<void> {
 
   await audit(ctx, "test.delete", "test", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حذف الاختبار." });
 }
 
@@ -406,6 +418,7 @@ export async function saveQuestion(fd: FormData): Promise<void> {
 
   await audit(ctx, "question.create", "question", question.id, { test_id: testId });
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم إضافة السؤال." });
 }
 
@@ -422,6 +435,7 @@ export async function deleteQuestion(fd: FormData): Promise<void> {
 
   await audit(ctx, "question.delete", "question", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حذف السؤال." });
 }
 
@@ -465,6 +479,7 @@ export async function reviewAttempt(fd: FormData): Promise<void> {
 
   await audit(ctx, `attempt.review_${decision}`, "test_attempt", id, { percentage: attempt.percentage });
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: decision === "accept" ? "تم اعتماد النتيجة." : "تم رفض النتيجة." });
 }
 
@@ -497,6 +512,7 @@ export async function revokeCertificate(fd: FormData): Promise<void> {
 
   await audit(ctx, "certificate.revoke", "certificate", id, { reason });
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم إلغاء الشهادة." });
 }
 
@@ -517,6 +533,7 @@ export async function reactivateCertificate(fd: FormData): Promise<void> {
 
   await audit(ctx, "certificate.reactivate", "certificate", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تمت إعادة تفعيل الشهادة." });
 }
 
@@ -579,6 +596,7 @@ export async function saveSchedule(fd: FormData): Promise<void> {
 
   await audit(ctx, id ? "schedule.update" : "schedule.create", "sector_schedule", id ?? title);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حفظ الجدول." });
 }
 
@@ -598,6 +616,7 @@ export async function deleteSchedule(fd: FormData): Promise<void> {
 
   await audit(ctx, "schedule.delete", "sector_schedule", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حذف الجدول." });
 }
 
@@ -633,6 +652,7 @@ export async function saveAnnouncement(fd: FormData): Promise<void> {
 
   await audit(ctx, id ? "announcement.update" : "announcement.create", "announcement", id ?? title);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حفظ الإعلان." });
 }
 
@@ -652,6 +672,7 @@ export async function deleteAnnouncement(fd: FormData): Promise<void> {
 
   await audit(ctx, "announcement.delete", "announcement", id);
   revalidatePath(path);
+  revalidatePublic();
   back(path, { msg: "تم حذف الإعلان." });
 }
 

@@ -5,7 +5,8 @@ import { getSectorBySlug } from "@/lib/data";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { MemberXp, XpLevel } from "@/lib/types";
 
-export const dynamic = "force-dynamic";
+/** ISR: يُخزَّن HTML ويُحدَّث تلقائيًا كل 5 دقائق أو فورًا بعد أي تعديل إداري. */
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,
