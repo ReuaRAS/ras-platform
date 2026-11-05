@@ -82,6 +82,15 @@ export type Announcement = {
   created_at: string;
 };
 
+export type Faq = {
+  id: string;
+  sector_id: string | null;
+  question: string;
+  answer: string;
+  sort_order: number;
+  is_published: boolean;
+};
+
 export type Schedule = {
   id: string;
   sector_id: string;

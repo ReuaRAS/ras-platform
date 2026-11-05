@@ -39,7 +39,8 @@ export type Permission =
   | "store.read"
   | "store.write"
   | "discord.read"
-  | "notifications.write";
+  | "notifications.write"
+  | "faq.write";
 
 const ALL: Permission[] = [
   "laws.read",
@@ -68,6 +69,7 @@ const ALL: Permission[] = [
   "store.write",
   "discord.read",
   "notifications.write",
+  "faq.write",
 ];
 
 export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
@@ -93,6 +95,7 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     "promotions.read",
     "store.read",
     "discord.read",
+    "faq.write",
   ],
   sector_trainer: [
     "laws.read",
@@ -183,6 +186,7 @@ export const ADMIN_NAV: {
     icon: "🔔",
     permission: "notifications.write",
   },
+  { href: "/admin/faq", label: "الأسئلة الشائعة", icon: "❓", permission: "faq.write" },
   { href: "/admin/discord", label: "Discord", icon: "🤖", permission: "discord.read" },
   {
     href: "/admin/audit-logs",

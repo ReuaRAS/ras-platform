@@ -10,8 +10,10 @@ const TABS = [
   { key: "courses", label: "الدورات" },
   { key: "rewards", label: "المكافآت" },
   { key: "ranks", label: "الرتب" },
+  { key: "leaderboard", label: "الصدارة" },
   { key: "store", label: "المتجر" },
   { key: "announcements", label: "الإعلانات" },
+  { key: "help", label: "الأسئلة" },
 ];
 
 export default function SectorHeader({

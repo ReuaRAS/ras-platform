@@ -5,8 +5,8 @@ import type { NextConfig } from "next";
  *
  * - outputFileTracingIncludes: يضمن شمول خطوط PDF العربية في حزمة النشر
  *   (تُقرأ من public/fonts وقت التشغيل في /api/test/submit).
- * - Sentry: الحزمة مثبّتة كنقطة ربط. لتفعيلها أنشئ sentry.client.config.ts
- *   و sentry.server.config.ts و لفّ الإعداد عبر withSentryConfig.
+ * - Sentry: يُحمَّل عبر `instrumentation.ts` و`instrumentation-client.ts` فقط عند
+ *   ضبط `SENTRY_DSN` / `NEXT_PUBLIC_SENTRY_DSN`؛ بلا DSN لا يُرسل شيء.
  */
 const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
