@@ -36,6 +36,14 @@ export default async function HomePage() {
     <div className="mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6">
       {/* Hero */}
       <section className="animate-fade-up mb-14 text-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/seal-rass.webp"
+          alt="شعار محافظة الرس"
+          width={128}
+          height={128}
+          className="mx-auto mb-5 block h-24 w-24 rounded-full object-cover shadow-[0_18px_45px_-18px_rgba(198,40,40,0.75)] ring-2 ring-[#f9a825]/25 sm:h-32 sm:w-32"
+        />
         <span className="badge badge-warn mb-5">
           <span aria-hidden="true">🏛️</span> محافظة الرس — FiveM
         </span>

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import DiscordModal from "./DiscordModal";
 
 const LINKS = [
   { href: "/", label: "الرئيسية" },
@@ -15,16 +14,20 @@ const LINKS = [
 export default function Navbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [discord, setDiscord] = useState(false);
 
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0d0d0d]/80 backdrop-blur-xl">
         <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
           <Link href="/" className="flex items-center gap-2.5">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#c62828] to-[#7f1d1d] text-lg">
-              🛡️
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/seal-rass.webp"
+              alt="شعار محافظة الرس"
+              width={36}
+              height={36}
+              className="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-white/15"
+            />
             <span className="leading-tight">
               <span className="block text-sm font-extrabold">منصة قطاعات الرس</span>
               <span className="block text-[10px] text-[#94a3b8]">أكاديمية الرس الذكية</span>
@@ -58,13 +61,6 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setDiscord(true)}
-              className="btn btn-ghost hidden !px-3 !py-1.5 text-xs sm:inline-flex"
-            >
-              💬 ديسكورد
-            </button>
             <Link href="/admin" className="btn btn-primary !px-3 !py-1.5 text-xs">
               لوحة الإدارة
             </Link>
@@ -96,8 +92,6 @@ export default function Navbar() {
           </div>
         )}
       </header>
-
-      <DiscordModal open={discord} onClose={() => setDiscord(false)} />
     </>
   );
 }
