@@ -44,7 +44,7 @@ export default function SectorHeader({
               alt={`شعار ${sector.name}`}
               width={64}
               height={64}
-              className="h-16 w-16 shrink-0 rounded-2xl object-contain shadow-lg"
+              className="h-16 w-16 shrink-0 object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,0.5)]"
             />
           ) : (
             <span

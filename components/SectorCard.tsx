@@ -30,7 +30,7 @@ export default function SectorCard({ sector }: { sector: Sector }) {
             alt={`شعار ${sector.name}`}
             width={44}
             height={44}
-            className="h-11 w-11 shrink-0 rounded-xl object-contain"
+            className="h-11 w-11 shrink-0 object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.45)]"
             loading="lazy"
           />
         ) : (
