@@ -68,7 +68,7 @@ export default async function HomePage() {
       <section id="sectors" className="mb-16 scroll-mt-24">
         <div className="mb-5 flex items-end justify-between">
           <div>
-            <h2 className="text-xl font-extrabold sm:text-2xl">القطاعات الخمسة</h2>
+            <h2 className="text-xl font-extrabold sm:text-2xl">القطاعات المعتمدة</h2>
             <p className="mt-1 text-xs text-[#94a3b8]">
               اختر القطاع لعرض قوانينه ودوراته ومكافآته
             </p>

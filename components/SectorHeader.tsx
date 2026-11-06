@@ -37,12 +37,23 @@ export default function SectorHeader({
           style={{ background: theme.light }}
         />
         <div className="relative flex flex-wrap items-center gap-4">
-          <span
-            className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-black/25 text-3xl"
-            aria-hidden="true"
-          >
-            {meta?.icon ?? "🏛️"}
-          </span>
+          {meta?.logo ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={meta.logo}
+              alt={`شعار ${sector.name}`}
+              width={64}
+              height={64}
+              className="h-16 w-16 shrink-0 rounded-2xl object-contain shadow-lg"
+            />
+          ) : (
+            <span
+              className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-black/25 text-3xl"
+              aria-hidden="true"
+            >
+              {meta?.icon ?? "🏛️"}
+            </span>
+          )}
           <div className="min-w-0">
             <div className="mb-1 flex items-center gap-2 text-[11px] font-bold text-white/70">
               <span className="rounded-full bg-black/25 px-2 py-0.5">{sector.sector_code}</span>

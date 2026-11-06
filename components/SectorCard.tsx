@@ -23,13 +23,25 @@ export default function SectorCard({ sector }: { sector: Sector }) {
         style={{ background: `linear-gradient(90deg, ${color}, transparent)` }}
       />
       <div className="flex items-start justify-between">
-        <span
-          className="flex h-11 w-11 items-center justify-center rounded-xl text-xl"
-          style={{ background: `color-mix(in srgb, ${color} 18%, transparent)` }}
-          aria-hidden="true"
-        >
-          {meta?.icon ?? "🏛️"}
-        </span>
+        {meta?.logo ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={meta.logo}
+            alt={`شعار ${sector.name}`}
+            width={44}
+            height={44}
+            className="h-11 w-11 shrink-0 rounded-xl object-contain"
+            loading="lazy"
+          />
+        ) : (
+          <span
+            className="flex h-11 w-11 items-center justify-center rounded-xl text-xl"
+            style={{ background: `color-mix(in srgb, ${color} 18%, transparent)` }}
+            aria-hidden="true"
+          >
+            {meta?.icon ?? "🏛️"}
+          </span>
+        )}
         <span
           className="rounded-full px-2.5 py-0.5 text-[10px] font-extrabold"
           style={{

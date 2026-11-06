@@ -16,8 +16,10 @@ export type SectorMeta = {
   primary_color_dark: string;
   /** البريد الإداري — يُستخدم فقط كخريطة للدخول عند إنشاء الحسابات */
   admin_email: string;
-  /** رمز تعبيري للعرض السريع */
+  /** رمز تعبيري للعرض السريع (احتياطي إذا غاب الشعار) */
   icon: string;
+  /** شعار القطاع في public/sectors — مربّع بزوايا شفافة */
+  logo: string;
   order: number;
 };
 
@@ -33,6 +35,7 @@ export const SECTORS: SectorMeta[] = [
     primary_color_dark: "#b71c1c",
     admin_email: "rca@ras.internal",
     icon: "⛑️",
+    logo: "/sectors/red-crescent.webp",
     order: 1,
   },
   {
@@ -46,6 +49,7 @@ export const SECTORS: SectorMeta[] = [
     primary_color_dark: "#ca6f1e",
     admin_email: "mg@ras.internal",
     icon: "🔧",
+    logo: "/sectors/mechanic-garage.webp",
     order: 2,
   },
   {
@@ -59,6 +63,7 @@ export const SECTORS: SectorMeta[] = [
     primary_color_dark: "#1f618d",
     admin_email: "ps@ras.internal",
     icon: "🚓",
+    logo: "/sectors/public-security.webp",
     order: 3,
   },
   {
@@ -72,6 +77,7 @@ export const SECTORS: SectorMeta[] = [
     primary_color_dark: "#1e8449",
     admin_email: "fs@ras.internal",
     icon: "🏛️",
+    logo: "/sectors/facility-security.webp",
     order: 4,
   },
   {
@@ -85,6 +91,7 @@ export const SECTORS: SectorMeta[] = [
     primary_color_dark: "#6c3483",
     admin_email: "sb@ras.internal",
     icon: "🛡️",
+    logo: "/sectors/security-brigades.webp",
     order: 5,
   },
 ];
