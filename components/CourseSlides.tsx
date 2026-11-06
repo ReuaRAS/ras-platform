@@ -18,36 +18,58 @@ export default function CourseSlides({
 }) {
   const [index, setIndex] = useState(0);
   const [showPdf, setShowPdf] = useState(Boolean(pdfUrl));
-  const total = slides.length;
-  const slide = slides[Math.min(index, Math.max(total - 1, 0))];
+
+  /**
+   * بعض المواد تصل PDF ومعها سلايد واحد نصّه مجرّد إشارة إلى الـPDF.
+   * في هذه الحالة لا نعرض تبويب السلايدات (بطاقة فارغة بلا فائدة)،
+   * وتبقى السلايدات ظاهرة كما هي للمواد التي فيها سلايدات حقيقية.
+   */
+  const stubDeck =
+    Boolean(pdfUrl) &&
+    slides.length === 1 &&
+    (slides[0]?.content ?? "")
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;|&#160;/g, " ")
+      .replace(/\s+/g, " ")
+      .trim().length < 200;
+
+  const deck = stubDeck ? [] : slides;
+  const total = deck.length;
+  const slide = deck[Math.min(index, Math.max(total - 1, 0))];
 
   return (
     <div className="space-y-4">
-      {pdfUrl && (
+      {(pdfUrl || sourceUrl) && (
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setShowPdf(true)}
-            className={`btn text-xs ${showPdf ? "btn-primary" : "btn-ghost"}`}
-          >
-            📄 عرض المادة (PDF)
-          </button>
-          <button
-            type="button"
-            onClick={() => setShowPdf(false)}
-            className={`btn text-xs ${!showPdf ? "btn-primary" : "btn-ghost"}`}
-          >
-            🗂️ السلايدات
-          </button>
-          <a
-            href={pdfUrl}
-            download
-            className="btn btn-ghost text-xs"
-            target="_blank"
-            rel="noreferrer"
-          >
-            ⬇️ تحميل
-          </a>
+          {pdfUrl && total > 0 && (
+            <>
+              <button
+                type="button"
+                onClick={() => setShowPdf(true)}
+                className={`btn text-xs ${showPdf ? "btn-primary" : "btn-ghost"}`}
+              >
+                📄 عرض المادة (PDF)
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowPdf(false)}
+                className={`btn text-xs ${!showPdf ? "btn-primary" : "btn-ghost"}`}
+              >
+                🗂️ السلايدات
+              </button>
+            </>
+          )}
+          {pdfUrl && (
+            <a
+              href={pdfUrl}
+              download
+              className="btn btn-ghost text-xs"
+              target="_blank"
+              rel="noreferrer"
+            >
+              ⬇️ تحميل
+            </a>
+          )}
           {sourceUrl && (
             <a
               href={sourceUrl}
@@ -61,7 +83,7 @@ export default function CourseSlides({
         </div>
       )}
 
-      {showPdf && pdfUrl ? (
+      {(showPdf || total === 0) && pdfUrl ? (
         <div className="glass-card overflow-hidden rounded-2xl">
           <iframe
             src={`${pdfUrl}#view=FitH`}
@@ -101,7 +123,7 @@ export default function CourseSlides({
             </button>
 
             <div className="hidden flex-1 items-center gap-1 sm:flex">
-              {slides.map((s, i) => (
+              {deck.map((s, i) => (
                 <button
                   key={`${s.title}-${i}`}
                   type="button"
