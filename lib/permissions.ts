@@ -40,6 +40,8 @@ export type Permission =
   | "store.write"
   | "discord.read"
   | "notifications.write"
+  | "roster.read"
+  | "roster.write"
   | "faq.write";
 
 const ALL: Permission[] = [
@@ -69,6 +71,8 @@ const ALL: Permission[] = [
   "store.write",
   "discord.read",
   "notifications.write",
+  "roster.read",
+  "roster.write",
   "faq.write",
 ];
 
@@ -96,6 +100,8 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     "store.read",
     "discord.read",
     "faq.write",
+    "roster.read",
+    "roster.write",
   ],
   sector_trainer: [
     "laws.read",
@@ -105,6 +111,7 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     "members.read",
     "attendance.read",
     "attendance.write",
+    "roster.read",
   ],
   sector_reviewer: [
     "laws.read",
@@ -113,6 +120,7 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     "certificates.read",
     "members.read",
     "promotions.read",
+    "roster.read",
   ],
   super_admin: ALL,
 };
@@ -173,6 +181,7 @@ export const ADMIN_NAV: {
     permission: "announcements.write",
   },
   { href: "/admin/members", label: "الأعضاء والنقاط", icon: "👥", permission: "members.read" },
+  { href: "/admin/roster", label: "كوادر القطاعات", icon: "🧾", permission: "roster.read" },
   {
     href: "/admin/attendance",
     label: "الحضور",

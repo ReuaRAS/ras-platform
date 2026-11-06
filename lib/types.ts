@@ -255,6 +255,31 @@ export type NotificationRow = {
   created_at: string;
 };
 
+/** حقل إضافي خاص بقطاع في جدول الكوادر (مثل: تصنيع، مدرب معتمد) */
+export type RosterField = {
+  id: string;
+  sector_id: string;
+  label: string;
+  kind: "bool" | "text";
+  position: number;
+};
+
+/** صف واحد في جدول كوادر القطاع */
+export type RosterRow = {
+  id: string;
+  sector_id: string;
+  code: string | null;
+  employee_no: string | null;
+  full_name: string;
+  level: string | null;
+  rank_title: string | null;
+  job_arc: string | null;
+  notes: string | null;
+  status: string | null;
+  extras: Record<string, string | boolean | null> | null;
+  position: number;
+};
+
 export const ROLE_LABELS: Record<string, string> = {
   viewer: "مشاهد",
   sector_admin: "قائد قطاع",
