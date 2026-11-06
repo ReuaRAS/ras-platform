@@ -8,7 +8,6 @@ import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createPublicSupabase } from "@/lib/supabase/public";
 import type {
-  Announcement,
   Certificate,
   Course,
   Law,
@@ -354,37 +353,8 @@ export async function getTestForCourse(sector: Sector, courseId: string): Promis
 }
 
 /* ------------------------------------------------------------------ */
-/* الإعلانات والجداول                                                 */
+/* الجداول                                                            */
 /* ------------------------------------------------------------------ */
-
-export async function getAnnouncements(sector: Sector): Promise<Announcement[]> {
-  if (isContentId(sector.id)) {
-    const content = getContentSector(sector.slug);
-    return (content?.announcements ?? []).map((a, i) => ({
-      id: cid(sector.slug, "ann", String(i)),
-      sector_id: cid(sector.slug),
-      title: a.title,
-      content: a.content,
-      event_date: null,
-      is_pinned: a.is_pinned ?? false,
-      is_published: true,
-      created_at: new Date(0).toISOString(),
-    }));
-  }
-  const sb = await supabase();
-  const rows = sb
-    ? await safeRows<Announcement>(() =>
-        sb
-          .from("announcements")
-          .select("*")
-          .eq("sector_id", sector.id)
-          .eq("is_published", true)
-          .order("is_pinned", { ascending: false })
-          .order("created_at", { ascending: false }),
-      )
-    : null;
-  return rows ?? [];
-}
 
 export async function getSchedules(sector: Sector): Promise<Schedule[]> {
   const content = getContentSector(sector.slug);

@@ -26,7 +26,6 @@ export type Permission =
   | "certificates.read"
   | "certificates.revoke"
   | "schedule.write"
-  | "announcements.write"
   | "recruitment.write"
   | "audit.read"
   | "sector.seed"
@@ -34,10 +33,6 @@ export type Permission =
   | "members.write"
   | "attendance.read"
   | "attendance.write"
-  | "promotions.read"
-  | "promotions.write"
-  | "store.read"
-  | "store.write"
   | "discord.read"
   | "notifications.write"
   | "roster.read"
@@ -57,7 +52,6 @@ const ALL: Permission[] = [
   "certificates.read",
   "certificates.revoke",
   "schedule.write",
-  "announcements.write",
   "recruitment.write",
   "audit.read",
   "sector.seed",
@@ -65,10 +59,6 @@ const ALL: Permission[] = [
   "members.write",
   "attendance.read",
   "attendance.write",
-  "promotions.read",
-  "promotions.write",
-  "store.read",
-  "store.write",
   "discord.read",
   "notifications.write",
   "roster.read",
@@ -91,13 +81,10 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     "certificates.read",
     "certificates.revoke",
     "schedule.write",
-    "announcements.write",
     "recruitment.write",
     "members.read",
     "attendance.read",
     "attendance.write",
-    "promotions.read",
-    "store.read",
     "discord.read",
     "faq.write",
     "roster.read",
@@ -119,7 +106,6 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     "results.review",
     "certificates.read",
     "members.read",
-    "promotions.read",
     "roster.read",
   ],
   super_admin: ALL,
@@ -162,24 +148,12 @@ export const ADMIN_NAV: {
     permission: "results.read",
   },
   {
-    href: "/admin/practice",
-    label: "إحصاءات التدريب",
-    icon: "🎯",
-    permission: "results.read",
-  },
-  {
     href: "/admin/certificates",
     label: "الشهادات",
     icon: "🎫",
     permission: "certificates.read",
   },
   { href: "/admin/schedule", label: "الجدول", icon: "🗓️", permission: "schedule.write" },
-  {
-    href: "/admin/announcements",
-    label: "الإعلانات",
-    icon: "📣",
-    permission: "announcements.write",
-  },
   { href: "/admin/members", label: "الأعضاء والنقاط", icon: "👥", permission: "members.read" },
   { href: "/admin/roster", label: "كوادر القطاعات", icon: "🧾", permission: "roster.read" },
   {
@@ -188,13 +162,6 @@ export const ADMIN_NAV: {
     icon: "✅",
     permission: "attendance.read",
   },
-  {
-    href: "/admin/promotions",
-    label: "الترقيات والرتب",
-    icon: "🎖️",
-    permission: "promotions.read",
-  },
-  { href: "/admin/store", label: "متجر النقاط", icon: "🛒", permission: "store.read" },
   {
     href: "/admin/notifications",
     label: "الإشعارات",

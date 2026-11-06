@@ -71,17 +71,6 @@ export type Recruitment = {
   is_open: boolean;
 };
 
-export type Announcement = {
-  id: string;
-  sector_id: string | null;
-  title: string;
-  content: string | null;
-  event_date: string | null;
-  is_pinned: boolean;
-  is_published: boolean;
-  created_at: string;
-};
-
 export type Faq = {
   id: string;
   sector_id: string | null;
@@ -187,53 +176,6 @@ export type AttendanceRecord = {
   attendance_date: string;
   checked_in_at: string;
   note: string | null;
-};
-
-export type Rank = {
-  id: string;
-  sector_id: string;
-  code: string;
-  title: string;
-  sort_order: number;
-  min_xp: number;
-  requirements: Record<string, unknown> | null;
-};
-
-export type Promotion = {
-  id: string;
-  sector_id: string | null;
-  discord_id: string;
-  from_rank: string | null;
-  to_rank: string;
-  status: "pending" | "approved" | "rejected";
-  note: string | null;
-  requested_by: string | null;
-  decided_by: string | null;
-  decided_at: string | null;
-  approved_at: string | null;
-  created_at: string;
-};
-
-export type StoreItem = {
-  id: string;
-  sector_id: string | null;
-  name: string;
-  description: string | null;
-  price: number;
-  stock: number | null;
-  is_active: boolean;
-  created_at: string;
-};
-
-export type StoreOrder = {
-  id: string;
-  sector_id: string | null;
-  item_id: string;
-  discord_id: string;
-  price_paid: number;
-  status: "pending" | "fulfilled" | "cancelled";
-  fulfilled_at: string | null;
-  created_at: string;
 };
 
 export type DiscordEvent = {

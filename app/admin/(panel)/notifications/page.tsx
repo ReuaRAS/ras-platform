@@ -2,7 +2,7 @@ import {
   markAllNotificationsRead,
   markNotificationRead,
   sendNotification,
-} from "@/lib/admin/actions-store";
+} from "@/lib/admin/actions-notifications";
 import { requireStaff } from "@/lib/auth/guard";
 import { hasPermission } from "@/lib/permissions";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -147,7 +147,7 @@ export default async function AdminNotificationsPage({
               <Field label="النص (اختياري)">
                 <textarea name="body" rows={3} className={inputCls} />
               </Field>
-              <Field label="الرابط (اختياري)" hint="مثال: /admin/promotions">
+              <Field label="الرابط (اختياري)" hint="مثال: /admin/laws">
                 <input name="href" dir="ltr" className={inputCls} placeholder="/admin/tests" />
               </Field>
               <SubmitButton className="!w-full">إرسال</SubmitButton>

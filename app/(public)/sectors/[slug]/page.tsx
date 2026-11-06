@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { GlassLinkCard } from "@/components/GlassCard";
 import SectorHeader from "@/components/SectorHeader";
 import {
-  getAnnouncements,
   getCourses,
   getLaws,
   getRecruitment,
@@ -24,12 +23,11 @@ export default async function SectorOverviewPage({
   const sector = await getSectorBySlug(slug);
   if (!sector) notFound();
 
-  const [laws, rewards, courses, recruitment, announcements, schedules] = await Promise.all([
+  const [laws, rewards, courses, recruitment, schedules] = await Promise.all([
     getLaws(sector),
     getRewards(sector),
     getCourses(sector),
     getRecruitment(sector),
-    getAnnouncements(sector),
     getSchedules(sector),
   ]);
 
@@ -139,25 +137,6 @@ export default async function SectorOverviewPage({
               </Link>
             </div>
           ))}
-        </section>
-      )}
-
-      {announcements.length > 0 && (
-        <section className="mt-6">
-          <h2 className="mb-3 text-base font-extrabold">آخر الإعلانات</h2>
-          <div className="grid gap-3">
-            {announcements.slice(0, 3).map((a) => (
-              <article key={a.id} className="glass-card rounded-2xl p-4">
-                <div className="mb-1 flex items-center gap-2">
-                  {a.is_pinned && <span className="badge badge-warn">مثبّت</span>}
-                  <h3 className="text-sm font-extrabold">{a.title}</h3>
-                </div>
-                {a.content && (
-                  <p className="text-xs leading-relaxed text-[#94a3b8]">{a.content}</p>
-                )}
-              </article>
-            ))}
-          </div>
         </section>
       )}
     </>

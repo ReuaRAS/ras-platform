@@ -13,8 +13,7 @@ type CountTable =
   | "tests"
   | "questions"
   | "test_attempts"
-  | "certificates"
-  | "announcements";
+  | "certificates";
 
 export default async function AdminDashboardPage({
   searchParams,
@@ -32,7 +31,7 @@ export default async function AdminDashboardPage({
     return c ?? 0;
   }
 
-  const [laws, rewards, courses, tests, attempts, certificates, announcements, published] =
+  const [laws, rewards, courses, tests, attempts, certificates, published] =
     await Promise.all([
       count("sector_laws"),
       count("sector_rewards"),
@@ -40,7 +39,6 @@ export default async function AdminDashboardPage({
       count("tests"),
       count("test_attempts"),
       count("certificates"),
-      count("announcements"),
       count("certificates"),
     ]);
 
@@ -66,7 +64,6 @@ export default async function AdminDashboardPage({
     { label: "الاختبارات", value: tests, href: "/admin/tests", icon: "🧪" },
     { label: "المحاولات", value: attempts, href: "/admin/test-results", icon: "📈" },
     { label: "الشهادات", value: certificates, href: "/admin/certificates", icon: "🎫" },
-    { label: "الإعلانات", value: announcements, href: "/admin/announcements", icon: "📣" },
     { label: "شهادات صالحة", value: published, href: "/admin/certificates", icon: "✅" },
   ];
 

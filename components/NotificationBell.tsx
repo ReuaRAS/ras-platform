@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { markAllNotificationsRead } from "@/lib/admin/actions-store";
+import { markAllNotificationsRead } from "@/lib/admin/actions-notifications";
 import { createServerSupabase } from "@/lib/supabase/server";
 
 /**

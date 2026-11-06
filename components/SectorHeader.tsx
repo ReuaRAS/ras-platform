@@ -9,11 +9,7 @@ const TABS = [
   { key: "recruitment", label: "التوظيف" },
   { key: "courses", label: "الدورات" },
   { key: "rewards", label: "المكافآت" },
-  { key: "practice", label: "التدريب" },
-  { key: "ranks", label: "الرتب" },
   { key: "leaderboard", label: "الصدارة" },
-  { key: "store", label: "المتجر" },
-  { key: "announcements", label: "الإعلانات" },
   { key: "help", label: "الأسئلة" },
 ];
 

@@ -8,7 +8,6 @@ const LINKS = [
   { href: "/", label: "الرئيسية" },
   { href: "/sectors/red-crescent", label: "القطاعات" },
   { href: "/certificates", label: "الشهادات" },
-  { href: "/tools/field-name-generator", label: "الأدوات" },
 ];
 
 export default function Navbar() {
