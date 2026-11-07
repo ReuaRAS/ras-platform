@@ -261,17 +261,17 @@ node scripts/sync-google-slides.mjs # تنزيل عروض Google Slides كـ PDF
 1. أنشئ حساب Cloudflare مجانيًا، ثم **My Profile → API Tokens → Create Token**
    بقالب *Edit Cloudflare Workers* مع صلاحية **Workers R2 Storage: Edit**.
 2. في GitHub → **Settings → Secrets and variables → Actions**:
-   - Secrets: `CLOUDFLARE_API_TOKEN` و`CLOUDFLARE_ACCOUNT_ID`.
+   - Secrets: `CLOUDFLARE_API_TOKEN` و`CLOUDFLARE_ACCOUNT_ID`
+     و`SUPABASE_SERVICE_ROLE_KEY` (يُضبط على العامل بعد كل نشر تلقائيًا).
    - Variables: `NEXT_PUBLIC_SUPABASE_URL` و`NEXT_PUBLIC_SUPABASE_ANON_KEY`
      و`NEXT_PUBLIC_APP_URL` (رابط الموقع النهائي) و`NEXT_PUBLIC_TURNSTILE_SITE_KEY`
      إن استُخدم Turnstile.
-3. أنشئ مخزن الكاش مرة واحدة: `npx wrangler r2 bucket create ras-platform-cache`
-   (سير العمل يحاول إنشاءه أيضًا ويتجاهل الخطأ إن كان موجودًا).
-4. أضف أسرار التشغيل في **Cloudflare → Workers & Pages → ras-platform → Settings →
-   Variables and Secrets**: `SUPABASE_SERVICE_ROLE_KEY` (نوع Secret)،
-   و`NEXT_PUBLIC_*` إن احتجتها وقت التشغيل.
-5. رابط الموقع: `https://ras-platform.<اسم-حسابك>.workers.dev`، أو اربط دومينًا
-   مخصصًا من **Settings → Domains & Routes**.
+3. مخزن الكاش `ras-platform-cache` ينشئه سير العمل تلقائيًا في أول تشغيل
+   (أو يدويًا: `npx wrangler r2 bucket create ras-platform-cache`).
+4. رابط الموقع: `https://ras-platform.<اسم-حسابك>.workers.dev` (اسم الحساب الفرعي
+   يظهر في **Workers & Pages** بعد أول استخدام؛ ضعه في `NEXT_PUBLIC_APP_URL` قبل
+   أول نشر)، أو اربط دومينًا مخصصًا من **Settings → Domains & Routes** وأعد النشر
+   بالرابط الجديد.
 
 النشر يدويًا من هذا المجلد عند الحاجة: `npm run cf:build` ثم `npm run cf:deploy`،
 وللمعاينة المحلية على workerd: `npm run cf:preview`.
