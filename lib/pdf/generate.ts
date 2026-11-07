@@ -219,35 +219,28 @@ export async function generateCertificatePdf(
     color: rgb(1, 1, 1),
   });
 
-  // شعار القطاع الرسمي — أعلى اليمين داخل شارة بيضاء، والنص ينسحب يساره
-  const sectorLogo = await loadSectorLogo(doc, input);
-  let sectorLabelRight = W - 52;
-  if (sectorLogo) {
-    const badge = 40;
-    const bx = W - 32 - 10 - badge;
-    const by = H - 47 - badge / 2;
-    page.drawRectangle({
-      x: bx,
-      y: by,
-      width: badge,
-      height: badge,
-      color: rgb(1, 1, 1),
-      borderColor: rgb(0.78, 0.63, 0.2),
-      borderWidth: 0.7,
-    });
-    page.drawImage(sectorLogo, { x: bx + 2.5, y: by + 2.5, width: badge - 5, height: badge - 5 });
-    sectorLabelRight = bx - 12;
-  }
-
+  // اسم القطاع داخل الشريط — أعلى اليمين
   drawRightAligned(
     page,
     `${input.sectorName} — ${input.sectorCode}`,
-    sectorLabelRight,
+    W - 52,
     H - 55,
     bold,
     13,
     rgb(1, 1, 1),
   );
+
+  // شعار القطاع الرسمي — أعلى اليمين تحت الشريط، بخلفية شفافة (PNG بألفا)
+  const sectorLogo = await loadSectorLogo(doc, input);
+  if (sectorLogo) {
+    const logoSize = 52;
+    page.drawImage(sectorLogo, {
+      x: W - 44 - logoSize,
+      y: H - 70 - logoSize,
+      width: logoSize,
+      height: logoSize,
+    });
+  }
 
   // العنوان
   drawCentered(page, "شهادة إتمام دورة", H - 130, bold, 34, dark);

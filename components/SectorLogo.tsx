@@ -31,16 +31,17 @@ export default function SectorLogo({
 
   return (
     <span
-      className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white p-1 ring-1 ring-white/30 shadow-[0_10px_25px_-12px_rgba(0,0,0,0.7)] ${className}`}
+      className={`relative flex shrink-0 items-center justify-center ${className}`}
       style={{ width: size, height: size }}
     >
+      {/* الشعار بخلفية شفافة: لا صندوق أبيض خلفه، وظل خفيف يفصله عن الخلفية الداكنة */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
         alt={`شعار ${sector.name}`}
         width={size}
         height={size}
-        className="h-full w-full rounded-xl object-contain"
+        className="h-full w-full object-contain drop-shadow-[0_4px_10px_rgba(0,0,0,0.45)]"
         loading="lazy"
       />
     </span>

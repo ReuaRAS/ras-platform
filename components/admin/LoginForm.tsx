@@ -35,7 +35,7 @@ export default function LoginForm({ siteKey }: { siteKey: string }) {
         </span>
         <h1 className="text-lg font-extrabold">لوحة إدارة القطاعات</h1>
         <p className="mt-1 text-[11px] text-[#94a3b8]">
-          اختر القطاع وأدخل كلمة مرور الإدارة
+          لكل قطاع حساب إدارة مستقل (بريد داخلي) وكلمة مرور خاصة به: اختر القطاع ثم أدخل كلمة مروره.
         </p>
       </div>
 
