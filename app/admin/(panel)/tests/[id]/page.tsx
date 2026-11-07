@@ -112,11 +112,70 @@ export default async function AdminTestBankPage({
                     </li>
                   ))}
                 </ul>
-                <form action={deleteQuestion} className="mt-2">
-                  <input type="hidden" name="test_id" value={test.id} />
-                  <input type="hidden" name="id" value={q.id} />
-                  <DangerButton>حذف السؤال</DangerButton>
-                </form>
+                <div className="mt-2 flex flex-wrap items-center gap-2">
+                  <details className="flex-1 rounded-xl border border-white/[0.06] bg-black/20 px-2 py-1.5">
+                    <summary className="cursor-pointer text-[10px] font-bold text-[#94a3b8]">
+                      تعديل السؤال
+                    </summary>
+                    <form action={saveQuestion} className="mt-2 space-y-2">
+                      <input type="hidden" name="test_id" value={test.id} />
+                      <input type="hidden" name="id" value={q.id} />
+                      <Field label="نص السؤال">
+                        <textarea
+                          name="question_text"
+                          rows={3}
+                          required
+                          defaultValue={q.question_text}
+                          className={inputCls}
+                        />
+                      </Field>
+                      {[0, 1, 2, 3].map((i) => (
+                        <Field key={i} label={`الخيار ${i + 1}`}>
+                          <input
+                            type="hidden"
+                            name={`choice_id_${i + 1}`}
+                            value={q.choices[i]?.id ?? ""}
+                          />
+                          <input
+                            name={`choice_${i + 1}`}
+                            defaultValue={q.choices[i]?.choice_text ?? ""}
+                            className={inputCls}
+                          />
+                        </Field>
+                      ))}
+                      <div className="grid grid-cols-2 gap-2">
+                        <Field label="الخيار الصحيح">
+                          <select
+                            name="correct"
+                            defaultValue={String(Math.max(0, q.choices.findIndex((c) => c.is_correct)))}
+                            className={inputCls}
+                          >
+                            <option value="0">الأول</option>
+                            <option value="1">الثاني</option>
+                            <option value="2">الثالث</option>
+                            <option value="3">الرابع</option>
+                          </select>
+                        </Field>
+                        <Field label="النقاط">
+                          <input
+                            name="points"
+                            type="number"
+                            min={1}
+                            max={10}
+                            defaultValue={q.points}
+                            className={inputCls}
+                          />
+                        </Field>
+                      </div>
+                      <SubmitButton className="!w-full">حفظ التعديل</SubmitButton>
+                    </form>
+                  </details>
+                  <form action={deleteQuestion}>
+                    <input type="hidden" name="test_id" value={test.id} />
+                    <input type="hidden" name="id" value={q.id} />
+                    <DangerButton>حذف السؤال</DangerButton>
+                  </form>
+                </div>
               </div>
             ))
           )}

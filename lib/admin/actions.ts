@@ -383,20 +383,84 @@ export async function saveQuestion(fd: FormData): Promise<void> {
   const testId = str(fd, "test_id");
   const path = `/admin/tests/${testId}`;
   const ctx = await requirePermission("questions.write");
-  sectorOrFail(ctx, path);
+  const sectorId = sectorOrFail(ctx, path);
   const admin = adminClient(path);
 
+  const id = nullable(str(fd, "id"));
   const questionText = str(fd, "question_text");
-  const points = Number(str(fd, "points") || 1);
+  const rawPoints = Number(str(fd, "points") || 1);
+  const points = Math.min(10, Math.max(1, Number.isFinite(rawPoints) ? rawPoints : 1));
   const correctIndex = Number(str(fd, "correct") || 0);
   const choices = [1, 2, 3, 4]
-    .map((i) => ({ text: str(fd, `choice_${i}`), index: i - 1 }))
+    .map((i) => ({
+      id: nullable(str(fd, `choice_id_${i}`)),
+      text: str(fd, `choice_${i}`),
+      index: i - 1,
+    }))
     .filter((c) => c.text.length > 0);
 
   if (questionText.length < 3) back(path, { error: "نص السؤال مطلوب." });
   if (choices.length < 2) back(path, { error: "أضف خيارين على الأقل." });
   if (!choices.some((c) => c.index === correctIndex))
     back(path, { error: "حدد الخيار الصحيح." });
+
+  // الاختبار نفسه يجب أن يكون داخل قطاع المشرف
+  const { data: scopeTest } = await admin
+    .from("tests")
+    .select("id")
+    .eq("id", testId)
+    .eq("sector_id", sectorId)
+    .maybeSingle();
+  if (!scopeTest) back(path, { error: "الاختبار غير موجود في قطاعك." });
+
+  if (id) {
+    const { data: existing } = await admin
+      .from("questions")
+      .select("id")
+      .eq("id", id)
+      .eq("test_id", testId)
+      .maybeSingle();
+    if (!existing) back(path, { error: "السؤال غير موجود داخل هذا الاختبار." });
+
+    const { error: updateError } = await admin
+      .from("questions")
+      .update({ question_text: questionText, points })
+      .eq("id", id)
+      .eq("test_id", testId);
+    if (updateError) back(path, { error: updateError.message });
+
+    // الخيارات تبقى بمعرّفاتها حتى لا تنكسر إجابات المحاولات السابقة
+    const { data: currentChoices } = await admin
+      .from("choices")
+      .select("id")
+      .eq("question_id", id);
+    const kept = new Set(choices.map((c) => c.id).filter((cid): cid is string => Boolean(cid)));
+
+    for (const choice of choices) {
+      const payload = { choice_text: choice.text, is_correct: choice.index === correctIndex };
+      const { error } = choice.id
+        ? await admin.from("choices").update(payload).eq("id", choice.id).eq("question_id", id)
+        : await admin.from("choices").insert({ question_id: id, ...payload });
+      if (error) back(path, { error: error.message });
+    }
+
+    const stale = (currentChoices ?? [])
+      .map((c) => c.id as string)
+      .filter((cid) => !kept.has(cid));
+    if (stale.length) {
+      const { error } = await admin
+        .from("choices")
+        .delete()
+        .in("id", stale)
+        .eq("question_id", id);
+      if (error) back(path, { error: error.message });
+    }
+
+    await audit(ctx, "question.update", "question", id, { test_id: testId });
+    revalidatePath(path);
+    revalidatePublic();
+    back(path, { msg: "تم تحديث السؤال." });
+  }
 
   const { data: question, error } = await admin
     .from("questions")
