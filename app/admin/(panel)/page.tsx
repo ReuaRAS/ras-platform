@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { seedSectorDefaults } from "@/lib/admin/actions";
 import { requireStaff } from "@/lib/auth/guard";
+import { hasPermission } from "@/lib/permissions";
+import { SECTORS } from "@/lib/sectors";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { TestAttempt } from "@/lib/types";
-import { Alert, Badge, EmptyState, PageHeader, Panel } from "@/components/admin/ui";
+import { Alert, Badge, EmptyState, PageHeader, Panel, SubmitButton, inputCls } from "@/components/admin/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -83,6 +86,48 @@ export default async function AdminDashboardPage({
           هذا الحساب مدير عام بدون قطاع محدد: يرى البيانات المجمّعة، لكن الكتابة تتطلب حسابًا مرتبطًا
           بقطاع.
         </Alert>
+      ) : null}
+
+      {ctx.sectorId && laws === 0 && rewards === 0 && courses === 0 ? (
+        <Panel
+          title={`مرحبًا بك في إدارة ${ctx.sector?.name ?? "القطاع"}!`}
+          description="القطاع لا يحتوي أي بيانات بعد. ابدأ من أحد الخيارات التالية — كل شيء يُدار من هنا دون تعديل كود."
+        >
+          <div className="grid gap-2 sm:grid-cols-3">
+            <Link href="/admin/courses" className="rounded-xl border border-white/[0.08] p-3 hover:bg-white/5">
+              <p className="text-xs font-extrabold">＋ إضافة أول دورة</p>
+              <p className="mt-1 text-[10px] text-[#94a3b8]">سلايدات + اختبار + شهادة</p>
+            </Link>
+            <Link href="/admin/laws" className="rounded-xl border border-white/[0.08] p-3 hover:bg-white/5">
+              <p className="text-xs font-extrabold">＋ إضافة أول قانون</p>
+              <p className="mt-1 text-[10px] text-[#94a3b8]">كود + عنوان + عقوبة</p>
+            </Link>
+            <Link href="/admin/rewards" className="rounded-xl border border-white/[0.08] p-3 hover:bg-white/5">
+              <p className="text-xs font-extrabold">＋ إضافة أول مكافأة</p>
+              <p className="mt-1 text-[10px] text-[#94a3b8]">قيمة المكافأة وشروطها</p>
+            </Link>
+          </div>
+
+          {hasPermission(ctx.role, "sector.seed") ? (
+            <form
+              action={seedSectorDefaults}
+              className="mt-3 flex flex-wrap items-end gap-2 border-t border-white/[0.06] pt-3"
+            >
+              <input type="hidden" name="redirect_to" value="/admin" />
+              <label className="flex flex-1 flex-col gap-1 text-[10px] text-[#94a3b8]">
+                نسخ القوانين والمكافآت من قطاع مرجعي
+                <select name="source_slug" defaultValue="red-crescent" className={inputCls}>
+                  {SECTORS.map((s) => (
+                    <option key={s.slug} value={s.slug}>
+                      {s.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <SubmitButton>نسخ الآن</SubmitButton>
+            </form>
+          ) : null}
+        </Panel>
       ) : null}
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">

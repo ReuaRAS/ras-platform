@@ -37,7 +37,8 @@ export type Permission =
   | "notifications.write"
   | "roster.read"
   | "roster.write"
-  | "faq.write";
+  | "faq.write"
+  | "announcements.write";
 
 const ALL: Permission[] = [
   "laws.read",
@@ -64,6 +65,7 @@ const ALL: Permission[] = [
   "roster.read",
   "roster.write",
   "faq.write",
+  "announcements.write",
 ];
 
 export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
@@ -87,6 +89,7 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
     "attendance.write",
     "discord.read",
     "faq.write",
+    "announcements.write",
     "roster.read",
     "roster.write",
   ],
@@ -169,6 +172,12 @@ export const ADMIN_NAV: {
     permission: "notifications.write",
   },
   { href: "/admin/faq", label: "الأسئلة الشائعة", icon: "❓", permission: "faq.write" },
+  {
+    href: "/admin/announcements",
+    label: "الإعلانات",
+    icon: "📣",
+    permission: "announcements.write",
+  },
   { href: "/admin/discord", label: "Discord", icon: "🤖", permission: "discord.read" },
   {
     href: "/admin/audit-logs",

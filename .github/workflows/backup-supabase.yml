@@ -1,0 +1,52 @@
+# نسخة احتياطية يومية لقاعدة Supabase (القرار 9 في المواصفة).
+# تحتاج سِرًّا واحدًا: SUPABASE_DB_URL (Connection string من Supabase → Database).
+# إن لم يُضبط، يُسجّل تنبيهًا ويتخطى العملية بنجاح بدل إفشال التشغيل.
+name: Backup Supabase
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check configuration
+        id: guard
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$DB_URL" ]; then
+            echo "::notice::SUPABASE_DB_URL غير مضبوط — تُخطّى النسخة الاحتياطية."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install PostgreSQL client
+        if: steps.guard.outputs.skip != 'true'
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
+
+      - name: Dump database
+        if: steps.guard.outputs.skip != 'true'
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          set -euo pipefail
+          STAMP="$(date -u +%Y-%m-%d)"
+          pg_dump "$DB_URL" --no-owner --no-privileges --format=custom --file "supabase-${STAMP}.dump"
+          ls -lh "supabase-${STAMP}.dump"
+
+      - name: Upload backup (7 days)
+        if: steps.guard.outputs.skip != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: supabase-backup
+          path: "*.dump"
+          retention-days: 7
+          if-no-files-found: error

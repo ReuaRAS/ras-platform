@@ -13,7 +13,7 @@
 
 | الطبقة | التقنية |
 | --- | --- |
-| الواجهة | Next.js 15.5 (App Router) + React 19 + TypeScript |
+| الواجهة | Next.js 16 (App Router) + React 19 + TypeScript |
 | التنسيق | Tailwind CSS v4 (بدون ملف config) + متغيّرات CSS لكل قطاع |
 | قاعدة البيانات | Supabase (PostgreSQL + Auth + Storage + RLS) |
 | الشهادات | `pdf-lib` + `arabic-persian-reshaper` + `bidi-js` (تشكيل عربي) + `qrcode` |
@@ -115,13 +115,8 @@ future/                       بنية فارغة للمراحل 8–13
 | `/sectors/[slug]/recruitment/guide` | دليل المتقدم |
 | `/sectors/[slug]/schedule` | جداول العمل |
 | `/sectors/[slug]/announcements` | الإعلانات |
-| `/sectors/[slug]/ranks` | سلّم الرتب ومتطلبات النقاط |
 | `/sectors/[slug]/leaderboard` | صدارة أعضاء القطاع بالنقاط |
 | `/sectors/[slug]/help` | الأسئلة الشائعة للقطاع (من جدول `faq`) |
-| `/sectors/[slug]/practice` | وضع التدريب: اختبارات القطاع المتاحة للتدرّب |
-| `/sectors/[slug]/practice/[testId]` | جلسة تدريب عشوائية مع تصحيح فوري وإظهار الإجابة الصحيحة |
-| `/sectors/[slug]/store` | متجر النقاط + عرض الرصيد بمعرّف Discord |
-| `/sectors/[slug]/certificates` | شهادات القطاع |
 | `/leaderboard` | لوحة الصدارة (أعلى 20 لكل قطاع، معرّفات مختصرة) |
 | `/certificates` | التحقق من شهادة برقمها |
 | `/verify/[certificateNo]` | صفحة التحقق (المسار داخل QR) |
@@ -166,11 +161,6 @@ future/                       بنية فارغة للمراحل 8–13
 - **الإشعارات**: إرسال إشعار لقطاع أو للكل، وتحديد مقروء/الكل من الجرس.
 - **Discord**: سجل أحداث الـ webhook وحالة المفتاح العام.
 - **الأسئلة الشائعة**: تحرير أسئلة/أجوبة القطاع ونشرها في صفحة المساعدة العامة.
-- **إحصاءات التدريب** (`/admin/practice`، صلاحية `results.read`): عدد محاولات وضع
-  التدريب ومتوسط الدرجات وأعلى درجة ونسبة بلوغ النجاح لكل اختبار وآخر محاولة، مع
-  جدول لكل قطاع للمدير العام، وتصدير CSV (`/api/admin/practice/export`) بنفس النطاق
-  نفسه مع BOM ليقرأ Excel العربية. تُحلَّل آخر 2000 محاولة، والمحاولات مسوّرة بقطاع
-  الموظف ما لم يكن مديرًا عامًا.
 
 ---
 
@@ -242,9 +232,9 @@ node scripts/sync-google-slides.mjs # تنزيل عروض Google Slides كـ PDF
 7. ألغِ الشهادة من اللوحة → صفحة التحقق يجب أن تعرض «ملغاة» مع السبب.
 8. `/admin/audit-logs` (مدير عام) → كل الخطوات أعلاه مسجّلة.
 9. `/admin/members` → أضف نقاطًا لعضو → يظهر في `/leaderboard` وفي شبكة الحضور.
-10. `/admin/promotions` → أضف رتبة، سجّل طلب ترقية، ثم اعتمد القرار (يظهر إشعار
-    في الجرس ويُسجّل في `member_ranks`).
-11. `/admin/store` → أضف عنصرًا، اشترِه لعضو، ثم ألغِ الطلب وتأكد من إرجاع النقاط.
+10. `/admin/announcements` → أضف إعلانًا منشورًا → تحقق من ظهوره في
+    `/sectors/[slug]/announcements`.
+11. `/admin/faq` → أضف سؤالًا → تحقق من ظهوره في `/sectors/[slug]/help`.
 
 ---
 
@@ -264,6 +254,9 @@ node scripts/sync-google-slides.mjs # تنزيل عروض Google Slides كـ PDF
    - Secrets: `CLOUDFLARE_API_TOKEN` و`CLOUDFLARE_ACCOUNT_ID`
      و`SUPABASE_SERVICE_ROLE_KEY` (يُضبط على العامل بعد كل نشر تلقائيًا).
    - Account ID الحالي: `7045c92d8af12f63f765f3129eed4542`.
+   - سِرّ اختياري للنسخ الاحتياطي اليومي: `SUPABASE_DB_URL` (Connection string من
+     Supabase → Database). سير العمل `.github/workflows/backup-supabase.yml` ينسخ
+     القاعدة يوميًا ويحفظ النسخة 7 أيام، ويتخطى نفسه بأمان إن لم يُضبط السِّرّ.
    - Variables: `NEXT_PUBLIC_SUPABASE_URL` و`NEXT_PUBLIC_SUPABASE_ANON_KEY`
      و`NEXT_PUBLIC_APP_URL` (رابط الموقع النهائي) و`NEXT_PUBLIC_TURNSTILE_SITE_KEY`
      إن استُخدم Turnstile.
@@ -325,7 +318,7 @@ node scripts/sync-google-slides.mjs # تنزيل عروض Google Slides كـ PDF
 | --- | --- |
 | 8.1 XP والرُتب | ✅ (`add_xp` + `xp_levels` + `ranks` + `member_ranks`) |
 | 8.2 لوحة الصدارة | ✅ `/leaderboard` + `/sectors/[slug]/leaderboard` |
-| 8.3 وضع التدريب (Practice) | ✅ `/sectors/[slug]/practice` — تصحيح فوري بلا شهادة ولا نقاط |
+| 8.3 وضع التدريب (Practice) | ⏳ أُزيلت الصفحات؛ الحقول `is_practice` و`practice_attempts` جاهزة |
 | 8.4 مركز المساعدة / FAQ | ✅ `/sectors/[slug]/help` + `/admin/faq` |
 | 8.5 البحث الشامل (⌘K) | ⏳ لم يُبنَ |
 | 8.6 جرس الإشعارات | ✅ |
@@ -372,8 +365,8 @@ node scripts/sync-google-slides.mjs # تنزيل عروض Google Slides كـ PDF
 
 قياس محلي بعد التحسين: `4–8ms` للصفحة المخزَّنة بدل `1.2–6.0s` قبلها.
 
-الصفحات الديناميكية الملزمة: `/admin/*` (جلسة)، `/certificates` و`/sectors/[slug]/store`
-(تعتمدان `searchParams`)، `/test/[testId]` (بدء محاولة).
+الصفحات الديناميكية الملزمة: `/admin/*` (جلسة)، `/certificates` (يعتمد `searchParams`)،
+`/test/[testId]` (بدء محاولة).
 
 ---
 

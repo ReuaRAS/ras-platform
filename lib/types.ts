@@ -80,6 +80,17 @@ export type Faq = {
   is_published: boolean;
 };
 
+export type Announcement = {
+  id: string;
+  sector_id: string | null;
+  title: string;
+  content: string | null;
+  event_date: string | null;
+  is_pinned: boolean;
+  is_published: boolean;
+  created_at: string;
+};
+
 export type Schedule = {
   id: string;
   sector_id: string;

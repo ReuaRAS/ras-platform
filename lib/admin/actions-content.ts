@@ -107,3 +107,102 @@ export async function deleteFaq(fd: FormData): Promise<void> {
   revalidatePublic();
   back(path, { msg: "تم حذف السؤال." });
 }
+
+/* ------------------------------------------------------------------ */
+/* الإعلانات                                                            */
+/* ------------------------------------------------------------------ */
+
+async function auditEntity(
+  ctx: Ctx,
+  action: string,
+  entityType: string,
+  entityId: string | null,
+  metadata: Record<string, unknown> = {},
+) {
+  try {
+    await logAudit(createAdminClient(), {
+      actorId: ctx.userId,
+      sectorId: ctx.sectorId,
+      action,
+      entityType,
+      entityId,
+      metadata,
+    });
+  } catch {
+    // تجاهل
+  }
+}
+
+export async function saveAnnouncement(fd: FormData): Promise<void> {
+  const path = "/admin/announcements";
+  const ctx = await requirePermission("announcements.write");
+
+  const id = nullable(str(fd, "id"));
+  const title = str(fd, "title");
+  const content = str(fd, "content");
+  const eventDate = str(fd, "event_date");
+
+  if (title.length < 4) back(path, { error: "العنوان قصير جدًا." });
+
+  const sectorId = ctx.isSuperAdmin
+    ? nullable(str(fd, "sector_id")) ?? ctx.sectorId
+    : ctx.sectorId;
+  if (!ctx.isSuperAdmin && !sectorId) back(path, { error: "لا يوجد قطاع مرتبط بهذا الحساب." });
+
+  const payload = {
+    sector_id: sectorId,
+    title,
+    content: nullable(content),
+    event_date: eventDate ? new Date(eventDate).toISOString() : null,
+    is_pinned: fd.get("is_pinned") !== null,
+    is_published: fd.get("is_published") !== null,
+  };
+
+  const admin = adminClient(path);
+
+  if (id) {
+    let q = admin.from("announcements").update(payload).eq("id", id);
+    if (!ctx.isSuperAdmin) q = q.eq("sector_id", ctx.sectorId!);
+    const { error } = await q;
+    if (error) back(path, { error: error.message });
+    await auditEntity(ctx, "announcement.update", "announcement", id, { title });
+  } else {
+    const { data, error } = await admin
+      .from("announcements")
+      .insert(payload)
+      .select("id")
+      .single();
+    if (error) back(path, { error: error.message });
+    await auditEntity(
+      ctx,
+      "announcement.create",
+      "announcement",
+      (data as { id: string } | null)?.id ?? null,
+      { title },
+    );
+  }
+
+  revalidatePath(path);
+  revalidatePath("/sectors", "layout");
+  revalidatePublic();
+  back(path, { msg: id ? "تم تحديث الإعلان." : "تمت إضافة الإعلان." });
+}
+
+export async function deleteAnnouncement(fd: FormData): Promise<void> {
+  const path = "/admin/announcements";
+  const ctx = await requirePermission("announcements.write");
+  const id = str(fd, "id");
+  if (!id) back(path, { error: "معرّف غير صالح." });
+
+  const admin = adminClient(path);
+  let q = admin.from("announcements").delete().eq("id", id);
+  if (!ctx.isSuperAdmin) q = q.eq("sector_id", ctx.sectorId!);
+  const { error } = await q;
+  if (error) back(path, { error: error.message });
+
+  await auditEntity(ctx, "announcement.delete", "announcement", id);
+  revalidatePath(path);
+  revalidatePath("/sectors", "layout");
+  revalidatePublic();
+  back(path, { msg: "تم حذف الإعلان." });
+}

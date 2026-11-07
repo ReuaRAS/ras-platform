@@ -31,6 +31,11 @@ export default function Footer() {
               </Link>
             </li>
             <li>
+              <Link href="/tools/field-name-generator" className="hover:text-white">
+                مولد الأسامي الميدانية
+              </Link>
+            </li>
+            <li>
               <Link href="/admin" className="hover:text-white">
                 لوحة الإدارة
               </Link>
