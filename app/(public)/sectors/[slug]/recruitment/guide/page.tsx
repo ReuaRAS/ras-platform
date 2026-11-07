@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import CourseSlides from "@/components/CourseSlides";
 import SectorHeader from "@/components/SectorHeader";
 import { getRecruitment, getSectorBySlug } from "@/lib/data";
+import { BookOpen } from "lucide-react";
 
 /** ISR: يُخزَّن HTML ويُحدَّث تلقائيًا كل 5 دقائق أو فورًا بعد أي تعديل إداري. */
 export const revalidate = 300;
@@ -39,7 +40,10 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
           <span className="text-white">الدليل الشامل</span>
         </nav>
 
-        <h1 className="mb-1 text-xl font-extrabold sm:text-2xl">📘 الدليل الشامل</h1>
+        <h1 className="mb-1 flex items-center gap-2 text-xl font-extrabold sm:text-2xl">
+          <BookOpen className="h-5 w-5 text-[var(--sector-light)]" aria-hidden="true" />
+          الدليل الشامل
+        </h1>
         <p className="mb-4 text-xs leading-relaxed text-[#94a3b8]">
           المراجع المعتمدة والبروتوكولات الأساسية للقطاع. يُنصح بقراءته كاملًا قبل بدء اختبار
           التوظيف.

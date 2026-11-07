@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { MessageCircle } from "lucide-react";
 
 /**
  * نافذة ديسكورد — تُستخدم لعرض رابط السيرفر ونسخ معرّف اللاعب
@@ -52,9 +53,7 @@ export default function DiscordModal({
         aria-label="سيرفر ديسكورد"
       >
         <div className="mb-4 flex items-center gap-3">
-          <span className="text-3xl" aria-hidden="true">
-            💬
-          </span>
+          <MessageCircle className="h-7 w-7 text-[#5865f2]" aria-hidden="true" />
           <div>
             <h2 className="text-lg font-extrabold">سيرفر محافظة الرس</h2>
             <p className="text-xs text-[#94a3b8]">انضم للسيرفر لاستلام التوزيع والتواصل</p>
@@ -70,7 +69,7 @@ export default function DiscordModal({
             فتح ديسكورد
           </a>
           <button type="button" onClick={copyInvite} className="btn btn-ghost flex-1">
-            {copied ? "✅ تم النسخ" : "نسخ الرابط"}
+            {copied ? "تم النسخ" : "نسخ الرابط"}
           </button>
         </div>
 

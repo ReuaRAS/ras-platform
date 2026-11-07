@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { GraduationCap } from "lucide-react";
+import { GraduationCap, Inbox, BookOpen } from "lucide-react";
 import SectorHeader from "@/components/SectorHeader";
 import { getCourses, getRecruitment, getSectorBySlug } from "@/lib/data";
 
@@ -43,16 +43,14 @@ export default async function CoursesPage({ params }: { params: Promise<{ slug: 
           </div>
           {recruitment.guide.length > 0 && (
             <Link href={`${base}/recruitment/guide`} className="btn btn-ghost text-xs">
-              📘 الدليل الشامل
+              <BookOpen className="inline h-4 w-4 align-[-2px]" aria-hidden="true" /> الدليل الشامل
             </Link>
           )}
         </div>
 
         {courses.length === 0 ? (
           <div className="glass-panel rounded-2xl border border-dashed border-white/15 p-8 text-center">
-            <p className="text-2xl" aria-hidden="true">
-              🎒
-            </p>
+            <Inbox className="mx-auto h-6 w-6 text-[#64748b]" aria-hidden="true" />
             <h3 className="mt-2 text-sm font-extrabold">لا توجد دورات منشورة</h3>
             <p className="mx-auto mt-1 max-w-md text-xs leading-relaxed text-[#94a3b8]">
               تُضاف الدورات من لوحة الإدارة مع سلايداتها ورمز شهادتها (certificate_prefix).

@@ -1,3 +1,23 @@
+import type { LucideIcon } from "lucide-react";
+import {
+  LayoutDashboard,
+  ScrollText,
+  Trophy,
+  Briefcase,
+  GraduationCap,
+  FlaskConical,
+  TrendingUp,
+  Ticket,
+  CalendarDays,
+  Users,
+  ClipboardList,
+  BadgeCheck,
+  Bell,
+  HelpCircle,
+  Megaphone,
+  Bot,
+  ShieldAlert,
+} from "lucide-react";
 /**
  * خريطة الصلاحيات (القسم 11 من المواصفة).
  *
@@ -134,55 +154,55 @@ export function isSectorStaff(role: string | null | undefined): boolean {
 export const ADMIN_NAV: {
   href: string;
   label: string;
-  icon: string;
+  icon: LucideIcon;
   permission?: Permission;
   superOnly?: boolean;
 }[] = [
-  { href: "/admin", label: "لوحة التحكم", icon: "📊" },
-  { href: "/admin/laws", label: "القوانين", icon: "📜", permission: "laws.read" },
-  { href: "/admin/rewards", label: "المكافآت", icon: "🏆", permission: "rewards.write" },
-  { href: "/admin/recruitment", label: "التوظيف", icon: "💼", permission: "recruitment.write" },
-  { href: "/admin/courses", label: "الدورات", icon: "🎓", permission: "courses.write" },
-  { href: "/admin/tests", label: "الاختبارات", icon: "🧪", permission: "tests.write" },
+  { href: "/admin", label: "لوحة التحكم", icon: LayoutDashboard },
+  { href: "/admin/laws", label: "القوانين", icon: ScrollText, permission: "laws.read" },
+  { href: "/admin/rewards", label: "المكافآت", icon: Trophy, permission: "rewards.write" },
+  { href: "/admin/recruitment", label: "التوظيف", icon: Briefcase, permission: "recruitment.write" },
+  { href: "/admin/courses", label: "الدورات", icon: GraduationCap, permission: "courses.write" },
+  { href: "/admin/tests", label: "الاختبارات", icon: FlaskConical, permission: "tests.write" },
   {
     href: "/admin/test-results",
     label: "نتائج الاختبارات",
-    icon: "📈",
+    icon: TrendingUp,
     permission: "results.read",
   },
   {
     href: "/admin/certificates",
     label: "الشهادات",
-    icon: "🎫",
+    icon: Ticket,
     permission: "certificates.read",
   },
-  { href: "/admin/schedule", label: "الجدول", icon: "🗓️", permission: "schedule.write" },
-  { href: "/admin/members", label: "الأعضاء والنقاط", icon: "👥", permission: "members.read" },
-  { href: "/admin/roster", label: "كوادر القطاعات", icon: "🧾", permission: "roster.read" },
+  { href: "/admin/schedule", label: "الجدول", icon: CalendarDays, permission: "schedule.write" },
+  { href: "/admin/members", label: "الأعضاء والنقاط", icon: Users, permission: "members.read" },
+  { href: "/admin/roster", label: "كوادر القطاعات", icon: ClipboardList, permission: "roster.read" },
   {
     href: "/admin/attendance",
     label: "الحضور",
-    icon: "✅",
+    icon: BadgeCheck,
     permission: "attendance.read",
   },
   {
     href: "/admin/notifications",
     label: "الإشعارات",
-    icon: "🔔",
+    icon: Bell,
     permission: "notifications.write",
   },
-  { href: "/admin/faq", label: "الأسئلة الشائعة", icon: "❓", permission: "faq.write" },
+  { href: "/admin/faq", label: "الأسئلة الشائعة", icon: HelpCircle, permission: "faq.write" },
   {
     href: "/admin/announcements",
     label: "الإعلانات",
-    icon: "📣",
+    icon: Megaphone,
     permission: "announcements.write",
   },
-  { href: "/admin/discord", label: "Discord", icon: "🤖", permission: "discord.read" },
+  { href: "/admin/discord", label: "Discord", icon: Bot, permission: "discord.read" },
   {
     href: "/admin/audit-logs",
     label: "سجل العمليات",
-    icon: "🕵️",
+    icon: ShieldAlert,
     permission: "audit.read",
     superOnly: true,
   },

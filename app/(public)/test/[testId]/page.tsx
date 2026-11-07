@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import TestFlow from "@/components/TestFlow";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { TURNSTILE_SITE_KEY } from "@/lib/turnstile";
+import { Wrench } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +27,7 @@ export default async function TestPage({
       <div className="mx-auto max-w-2xl px-4 py-16">
         <div className="glass-card rounded-3xl p-8 text-center">
           <p className="text-3xl" aria-hidden="true">
-            🛠️
+            <Wrench className="h-4 w-4" aria-hidden="true" />
           </p>
           <h1 className="mt-3 text-lg font-extrabold">الاختبارات غير مهيّأة بعد</h1>
           <p className="mt-2 text-xs leading-relaxed text-[#94a3b8]">

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import SectorHeader from "@/components/SectorHeader";
 import { getSchedules, getSectorBySlug } from "@/lib/data";
+import { CalendarDays } from "lucide-react";
 
 /** ISR: يُخزَّن HTML ويُحدَّث تلقائيًا كل 5 دقائق أو فورًا بعد أي تعديل إداري. */
 export const revalidate = 300;
@@ -30,9 +31,7 @@ export default async function SchedulePage({ params }: { params: Promise<{ slug:
       <div className="mt-6 space-y-5">
         {schedules.length === 0 ? (
           <div className="glass-panel rounded-2xl border border-dashed border-white/15 p-8 text-center">
-            <p className="text-2xl" aria-hidden="true">
-              📅
-            </p>
+            <CalendarDays className="mx-auto h-6 w-6 text-[#64748b]" aria-hidden="true" />
             <h2 className="mt-2 text-sm font-extrabold">لا يوجد جدول منشور</h2>
             <p className="mt-1 text-xs text-[#94a3b8]">يُضاف الجدول من لوحة الإدارة.</p>
           </div>

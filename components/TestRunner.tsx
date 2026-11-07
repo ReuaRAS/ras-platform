@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { PublicQuestion, SuspicionFlag } from "@/lib/test-types";
+import { AlertTriangle, Timer } from "lucide-react";
 
 function formatTime(seconds: number) {
   const m = Math.floor(Math.max(seconds, 0) / 60);
@@ -114,7 +115,7 @@ export default function TestRunner({
         <div className="flex items-center gap-3">
           {warnCount > 0 && (
             <span className="badge badge-warn" title="يُسجَّل تبديل التبويب في تقرير المشرف">
-              ⚠️ {warnCount} تحذير
+              <AlertTriangle className="inline h-3.5 w-3.5 align-[-2px]" aria-hidden="true" /> {warnCount} تحذير
             </span>
           )}
           <span
@@ -125,7 +126,7 @@ export default function TestRunner({
             }`}
             aria-live="off"
           >
-            ⏱ {formatTime(remaining)}
+            <Timer className="inline h-3.5 w-3.5 align-[-2px]" aria-hidden="true" /> {formatTime(remaining)}
           </span>
         </div>
       </div>

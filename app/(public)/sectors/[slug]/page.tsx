@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Briefcase, FileText, GraduationCap, Trophy } from "lucide-react";
+import { Briefcase, FileText, GraduationCap, Trophy, Construction } from "lucide-react";
 import { GlassLinkCard } from "@/components/GlassCard";
 import SectorHeader from "@/components/SectorHeader";
 import {
@@ -89,9 +89,7 @@ export default async function SectorOverviewPage({
 
       {laws.length === 0 && courses.length === 0 && rewards.length === 0 && (
         <section className="glass-panel mt-6 rounded-2xl border border-dashed border-white/15 p-8 text-center">
-          <p className="text-2xl" aria-hidden="true">
-            🚧
-          </p>
+          <Construction className="mx-auto h-6 w-6 text-[#64748b]" aria-hidden="true" />
           <h2 className="mt-2 text-base font-extrabold">المحتوى قيد الإعداد</h2>
           <p className="mx-auto mt-2 max-w-lg text-xs leading-relaxed text-[#94a3b8]">
             لم يُضف محتوى لهذا القطاع بعد. تُدار القوانين والدورات والمكافآت بالكامل من لوحة

@@ -67,7 +67,9 @@ export default function AdminSidebar({
                     : "text-[#94a3b8] hover:bg-white/5 hover:text-white"
                 }`}
               >
-                <span aria-hidden="true">{item.icon}</span>
+                <span aria-hidden="true">
+                  <item.icon className="h-4 w-4" />
+                </span>
                 {item.label}
               </Link>
             );

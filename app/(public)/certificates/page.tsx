@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Award, FileText, Fingerprint, QrCode, Search, type LucideIcon } from "lucide-react";
 import CertificateCard from "@/components/CertificateCard";
 import { getCertificateByNo, getSectors } from "@/lib/data";
 import { APP_URL } from "@/lib/supabase/env";
@@ -30,8 +31,9 @@ export default async function CertificatesPage({
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
       <header className="mb-8 text-center">
-        <h1 className="text-2xl font-black sm:text-3xl">
-          🎫 <span className="gold-text">الشهادات</span>
+        <h1 className="flex items-center justify-center gap-2 text-2xl font-black sm:text-3xl">
+          <Award className="h-6 w-6 text-[#f9a825]" aria-hidden="true" />
+          <span className="gold-text">الشهادات</span>
         </h1>
         <p className="mx-auto mt-2 max-w-xl text-xs leading-relaxed text-[#94a3b8]">
           أدخل رقم الشهادة للتحقق منها وعرض بياناتها وتحميل ملف PDF. للتحقق المباشر استخدم
@@ -69,9 +71,7 @@ export default async function CertificatesPage({
           />
         ) : (
           <div className="glass-panel rounded-2xl border border-dashed border-white/15 p-10 text-center">
-            <p className="text-2xl" aria-hidden="true">
-              🔍
-            </p>
+            <Search className="mx-auto h-6 w-6 text-[#64748b]" aria-hidden="true" />
             <h2 className="mt-2 text-sm font-extrabold">لا توجد شهادة بهذا الرقم</h2>
             <p className="mt-1 text-xs text-[#94a3b8]">
               تأكد من كتابة الرقم كاملًا كما هو مطبوع على الشهادة.
@@ -80,15 +80,13 @@ export default async function CertificatesPage({
         )
       ) : (
         <div className="grid gap-3 sm:grid-cols-3">
-          {[
-            { icon: "🔐", t: "رقم فريد", d: "كل شهادة تصدر برقم لا يتكرر أبدًا." },
-            { icon: "📱", t: "QR فوري", d: "رمز QR يفتح صفحة تحقق رسمية." },
-            { icon: "📄", t: "نسخة PDF", d: "ملف قابل للتحميل والطباعة." },
-          ].map((f) => (
+          {([
+            { Icon: Fingerprint, t: "رقم فريد", d: "كل شهادة تصدر برقم لا يتكرر أبدًا." },
+            { Icon: QrCode, t: "QR فوري", d: "رمز QR يفتح صفحة تحقق رسمية." },
+            { Icon: FileText, t: "نسخة PDF", d: "ملف قابل للتحميل والطباعة." },
+          ] as { Icon: LucideIcon; t: string; d: string }[]).map((f) => (
             <div key={f.t} className="glass-card rounded-2xl p-4 text-center">
-              <p className="text-xl" aria-hidden="true">
-                {f.icon}
-              </p>
+              <f.Icon className="mx-auto h-5 w-5 text-[#f9a825]" aria-hidden="true" />
               <h2 className="mt-1 text-xs font-extrabold">{f.t}</h2>
               <p className="mt-1 text-[11px] leading-relaxed text-[#94a3b8]">{f.d}</p>
             </div>

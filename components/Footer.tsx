@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ShieldCheck } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -6,8 +7,8 @@ export default function Footer() {
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
         <div>
           <div className="mb-3 flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#c62828] to-[#7f1d1d] text-sm">
-              🛡️
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#c62828] to-[#7f1d1d]">
+              <ShieldCheck className="h-4 w-4 text-white" aria-hidden="true" />
             </span>
             <span className="text-sm font-extrabold">منصة قطاعات محافظة الرس</span>
           </div>

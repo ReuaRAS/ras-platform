@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ScrollText } from "lucide-react";
+import { ScrollText, Inbox } from "lucide-react";
 import LawsList from "@/components/LawsList";
 import SectorHeader from "@/components/SectorHeader";
 import { getLaws, getSectorBySlug } from "@/lib/data";
@@ -42,9 +42,7 @@ export default async function LawsPage({ params }: { params: Promise<{ slug: str
 
         {laws.length === 0 ? (
           <div className="glass-panel rounded-2xl border border-dashed border-white/15 p-8 text-center">
-            <p className="text-2xl" aria-hidden="true">
-              📭
-            </p>
+            <Inbox className="mx-auto h-6 w-6 text-[#64748b]" aria-hidden="true" />
             <h3 className="mt-2 text-sm font-extrabold">لا توجد قوانين منشورة</h3>
             <p className="mt-1 text-xs text-[#94a3b8]">
               تُضاف القوانين من لوحة الإدارة، ويمكن نسخ القوانين الأساسية من قطاع مرجعي.

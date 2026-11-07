@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Medal } from "lucide-react";
+import { Medal, Inbox } from "lucide-react";
 import { getSectors } from "@/lib/data";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { MemberXp, Sector, XpLevel } from "@/lib/types";
@@ -57,9 +57,7 @@ export default async function LeaderboardPage() {
 
       {rows.length === 0 ? (
         <div className="mt-4 rounded-2xl border border-dashed border-white/15 p-8 text-center">
-          <p className="text-2xl" aria-hidden="true">
-            📭
-          </p>
+          <Inbox className="mx-auto h-6 w-6 text-[#64748b]" aria-hidden="true" />
           <h2 className="mt-2 text-sm font-extrabold">لا توجد نقاط مسجّلة بعد</h2>
           <p className="mt-1 text-xs text-[#94a3b8]">
             تظهر الأسماء بعد أول شهادة تُصدر أو أول تعديل نقاط من لوحة الإدارة.

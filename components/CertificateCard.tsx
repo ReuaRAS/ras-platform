@@ -1,6 +1,7 @@
 import QRCode from "qrcode";
 import { formatDate } from "@/lib/utils";
 import type { Certificate } from "@/lib/types";
+import { Download } from "lucide-react";
 
 /**
  * بطاقة عرض الشهادة — لا تُظهر أي بيانات حساسة
@@ -35,10 +36,10 @@ export default async function CertificateCard({
 
   const badge =
     status === "valid"
-      ? { cls: "badge-success", text: "✔ شهادة صحيحة" }
+      ? { cls: "badge-success", text: "شهادة صحيحة" }
       : status === "revoked"
-        ? { cls: "badge-danger", text: "✖ شهادة ملغاة" }
-        : { cls: "badge-warn", text: "⌛ شهادة منتهية" };
+        ? { cls: "badge-danger", text: "شهادة ملغاة" }
+        : { cls: "badge-warn", text: "شهادة منتهية" };
 
   return (
     <article
@@ -102,7 +103,7 @@ export default async function CertificateCard({
                 rel="noreferrer"
                 className="btn btn-primary text-xs"
               >
-                ⬇️ تحميل PDF
+                <Download className="inline h-4 w-4 align-[-2px]" aria-hidden="true" /> تحميل PDF
               </a>
             )}
             {showVerifyLink && (

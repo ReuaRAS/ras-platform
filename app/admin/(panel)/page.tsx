@@ -6,6 +6,7 @@ import { SECTORS } from "@/lib/sectors";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { TestAttempt } from "@/lib/types";
 import { Alert, Badge, EmptyState, PageHeader, Panel, SubmitButton, inputCls } from "@/components/admin/ui";
+import { FileText, Trophy, GraduationCap, FlaskConical, TrendingUp, Ticket, BadgeCheck } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -61,13 +62,13 @@ export default async function AdminDashboardPage({
   const recent = (recentData ?? []) as TestAttempt[];
 
   const statCards = [
-    { label: "القوانين", value: laws, href: "/admin/laws", icon: "📜" },
-    { label: "المكافآت", value: rewards, href: "/admin/rewards", icon: "🏆" },
-    { label: "الدورات", value: courses, href: "/admin/courses", icon: "🎓" },
-    { label: "الاختبارات", value: tests, href: "/admin/tests", icon: "🧪" },
-    { label: "المحاولات", value: attempts, href: "/admin/test-results", icon: "📈" },
-    { label: "الشهادات", value: certificates, href: "/admin/certificates", icon: "🎫" },
-    { label: "شهادات صالحة", value: published, href: "/admin/certificates", icon: "✅" },
+    { label: "القوانين", value: laws, href: "/admin/laws", Icon: FileText },
+    { label: "المكافآت", value: rewards, href: "/admin/rewards", Icon: Trophy },
+    { label: "الدورات", value: courses, href: "/admin/courses", Icon: GraduationCap },
+    { label: "الاختبارات", value: tests, href: "/admin/tests", Icon: FlaskConical },
+    { label: "المحاولات", value: attempts, href: "/admin/test-results", Icon: TrendingUp },
+    { label: "الشهادات", value: certificates, href: "/admin/certificates", Icon: Ticket },
+    { label: "شهادات صالحة", value: published, href: "/admin/certificates", Icon: BadgeCheck },
   ];
 
   return (
@@ -139,7 +140,9 @@ export default async function AdminDashboardPage({
           >
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-bold text-[#94a3b8]">{card.label}</span>
-              <span aria-hidden="true">{card.icon}</span>
+              <span aria-hidden="true">
+                <card.Icon className="h-4 w-4 text-[#94a3b8]" />
+              </span>
             </div>
             <p className="mt-1 text-xl font-extrabold">{card.value}</p>
           </Link>

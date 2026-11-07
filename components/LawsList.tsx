@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { Law } from "@/lib/types";
+import { Coins, Search } from "lucide-react";
 
 export default function LawsList({ laws }: { laws: Law[] }) {
   const [query, setQuery] = useState("");
@@ -29,12 +30,14 @@ export default function LawsList({ laws }: { laws: Law[] }) {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="ابحث في القوانين… (مثال: إهمال، راديو، 500,000)"
-            className="field pr-10"
+            className="field"
+            style={{ paddingRight: "2.5rem" }}
             aria-label="بحث في القوانين"
           />
-          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#64748b]">
-            🔍
-          </span>
+          <Search
+            className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#64748b]"
+            aria-hidden="true"
+          />
         </div>
         <div className="flex gap-1">
           {[
@@ -79,7 +82,7 @@ export default function LawsList({ laws }: { laws: Law[] }) {
               </div>
 
               <p className="text-xs font-bold text-[#f9a825]">
-                <span aria-hidden="true">💰</span> {law.penalty}
+                <Coins className="mr-1 inline h-3.5 w-3.5 align-[-2px]" aria-hidden="true" /> {law.penalty}
               </p>
 
               {law.additional_penalty && (

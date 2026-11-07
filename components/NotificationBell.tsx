@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { markAllNotificationsRead } from "@/lib/admin/actions-notifications";
 import { createServerSupabase } from "@/lib/supabase/server";
+import { Bell } from "lucide-react";
 
 /**
  * جرس الإشعارات (المرحلة 13 — بنية أساسية).
@@ -34,7 +35,7 @@ export default async function NotificationBell() {
         className="flex h-9 cursor-pointer list-none items-center gap-1 rounded-lg border border-white/10 px-2 text-xs text-[#94a3b8] hover:bg-white/5 hover:text-white"
         aria-label={`الإشعارات${unread ? ` (${unread} غير مقروء)` : ""}`}
       >
-        <span aria-hidden="true">🔔</span>
+        <Bell className="h-[18px] w-[18px]" aria-hidden="true" />
         {unread > 0 ? (
           <span className="rounded-full bg-[var(--sector-main)] px-1.5 text-[10px] font-bold text-white">
             {unread > 9 ? "9+" : unread}

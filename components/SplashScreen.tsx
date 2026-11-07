@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ShieldCheck } from "lucide-react";
 
 const STORAGE_KEY = "ras-splash-shown";
 
@@ -40,7 +41,7 @@ export default function SplashScreen() {
     >
       <div className="animate-fade-up flex flex-col items-center gap-5 px-6 text-center">
         <div className="relative flex h-24 w-24 items-center justify-center rounded-3xl border border-white/10 bg-[#c62828]/15 text-5xl">
-          <span aria-hidden="true">🛡️</span>
+          <ShieldCheck className="h-12 w-12 text-[#f87171]" aria-hidden="true" />
           <span className="absolute inset-0 rounded-3xl border border-[#c62828]/40 animate-pulse-ring" />
         </div>
         <h1 className="text-2xl font-extrabold sm:text-3xl">

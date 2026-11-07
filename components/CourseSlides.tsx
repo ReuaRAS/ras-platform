@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { ContentSlide } from "@/lib/content/types";
+import { FileText, LayoutGrid, Download } from "lucide-react";
 
 /**
  * عارض السلايدات: تنقّل بين السلايدات + عارض PDF للمواد التي جاءت كعروض.
@@ -48,14 +49,14 @@ export default function CourseSlides({
                 onClick={() => setShowPdf(true)}
                 className={`btn text-xs ${showPdf ? "btn-primary" : "btn-ghost"}`}
               >
-                📄 عرض المادة (PDF)
+                <FileText className="inline h-4 w-4 align-[-2px]" aria-hidden="true" /> عرض المادة (PDF)
               </button>
               <button
                 type="button"
                 onClick={() => setShowPdf(false)}
                 className={`btn text-xs ${!showPdf ? "btn-primary" : "btn-ghost"}`}
               >
-                🗂️ السلايدات
+                <LayoutGrid className="inline h-4 w-4 align-[-2px]" aria-hidden="true" /> السلايدات
               </button>
             </>
           )}
@@ -67,7 +68,7 @@ export default function CourseSlides({
               target="_blank"
               rel="noreferrer"
             >
-              ⬇️ تحميل
+              <Download className="inline h-4 w-4 align-[-2px]" aria-hidden="true" /> تحميل
             </a>
           )}
           {sourceUrl && (

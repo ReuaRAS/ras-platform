@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Trophy } from "lucide-react";
+import { Trophy, Inbox, Gift } from "lucide-react";
 import SectorHeader from "@/components/SectorHeader";
 import { getRewards, getSectorBySlug } from "@/lib/data";
 
@@ -41,9 +41,7 @@ export default async function RewardsPage({ params }: { params: Promise<{ slug: 
 
         {rewards.length === 0 ? (
           <div className="glass-panel rounded-2xl border border-dashed border-white/15 p-8 text-center">
-            <p className="text-2xl" aria-hidden="true">
-              📭
-            </p>
+            <Inbox className="mx-auto h-6 w-6 text-[#64748b]" aria-hidden="true" />
             <h3 className="mt-2 text-sm font-extrabold">لا توجد مكافآت منشورة</h3>
             <p className="mt-1 text-xs text-[#94a3b8]">تُضاف المكافآت من لوحة الإدارة.</p>
           </div>
@@ -59,7 +57,7 @@ export default async function RewardsPage({ params }: { params: Promise<{ slug: 
                     <h3 className="text-sm font-extrabold leading-snug">{r.title}</h3>
                   </div>
                   <p className="text-xs font-bold text-[#4ade80]">
-                    <span aria-hidden="true">🎁</span> {r.reward_value}
+                    <Gift className="mr-1 inline h-3.5 w-3.5 align-[-2px]" aria-hidden="true" /> {r.reward_value}
                   </p>
                   {r.conditions && (
                     <p className="mt-2 rounded-lg bg-black/30 px-2.5 py-1.5 text-[11px] leading-relaxed text-[#94a3b8]">

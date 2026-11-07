@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, Inbox } from "lucide-react";
 import SectorHeader from "@/components/SectorHeader";
 import { getSectorBySlug } from "@/lib/data";
 import { createPublicSupabase } from "@/lib/supabase/public";
@@ -53,9 +53,7 @@ export default async function SectorHelpPage({ params }: { params: Promise<{ slu
 
         {items.length === 0 ? (
           <div className="glass-panel rounded-2xl border border-dashed border-white/15 p-8 text-center">
-            <p className="text-2xl" aria-hidden="true">
-              📭
-            </p>
+            <Inbox className="mx-auto h-6 w-6 text-[#64748b]" aria-hidden="true" />
             <h3 className="mt-2 text-sm font-extrabold">لا توجد أسئلة شائعة بعد</h3>
             <p className="mt-1 text-xs text-[#94a3b8]">تُضاف من لوحة الإدارة ← الأسئلة الشائعة.</p>
           </div>

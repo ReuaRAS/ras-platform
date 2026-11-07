@@ -29,7 +29,6 @@ export const LOGIN_SECTORS = SECTORS.map((s) => ({
   name: s.name,
   code: s.sector_code,
   color: s.primary_color,
-  icon: s.icon,
 })).map((s) => ({ ...s, label: `${s.name} (${s.code})` }));
 
 export { getSectorMeta };

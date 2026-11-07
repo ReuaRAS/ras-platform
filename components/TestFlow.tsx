@@ -11,6 +11,7 @@ import type {
   SubmitAttemptResponse,
   SuspicionFlag,
 } from "@/lib/test-types";
+import { PartyPopper, Frown, Download } from "lucide-react";
 
 type Stage = "register" | "running" | "result";
 
@@ -120,7 +121,7 @@ export default function TestFlow({
           }`}
           aria-hidden="true"
         >
-          {passed ? "🎉" : "😔"}
+          {passed ? <PartyPopper className="h-9 w-9 text-[#4ade80]" /> : <Frown className="h-9 w-9 text-[#f87171]" />}
         </div>
 
         <h1 className="text-2xl font-black">
@@ -177,7 +178,7 @@ export default function TestFlow({
                   rel="noreferrer"
                   className="btn btn-ghost text-xs"
                 >
-                  ⬇️ تحميل PDF
+                  <Download className="inline h-4 w-4 align-[-2px]" aria-hidden="true" /> تحميل PDF
                 </a>
               )}
             </div>

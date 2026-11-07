@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Briefcase } from "lucide-react";
+import { Briefcase, BookOpen, PenLine } from "lucide-react";
 import SectorHeader from "@/components/SectorHeader";
 import { getRecruitment, getSectorBySlug, getTests } from "@/lib/data";
 
@@ -56,12 +56,12 @@ export default async function RecruitmentPage({
             <div className="mt-5 flex flex-wrap gap-2">
               {recruitment.guide.length > 0 && (
                 <Link href={`${base}/recruitment/guide`} className="btn btn-ghost text-xs">
-                  📘 الدليل الشامل
+                  <BookOpen className="inline h-4 w-4 align-[-2px]" aria-hidden="true" /> الدليل الشامل
                 </Link>
               )}
               {recruitmentTest ? (
                 <Link href={`/test/${recruitmentTest.id}`} className="btn btn-primary text-xs">
-                  ✍️ ابدأ اختبار التوظيف
+                  <PenLine className="inline h-4 w-4 align-[-2px]" aria-hidden="true" /> ابدأ اختبار التوظيف
                 </Link>
               ) : (
                 <span className="badge badge-warn">اختبار التوظيف غير مهيّأ بعد</span>
