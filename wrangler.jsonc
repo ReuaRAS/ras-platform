@@ -1,6 +1,6 @@
 // إعداد Workers للنشر من مستودع GitHub (حساب Cloudflare الخاص بالمشروع).
-// الكاش المتقدّم (R2 + Durable Objects) يحتاج تفعيل R2 من لوحة Cloudflare؛
-// بعد تفعيله أضف الربطات الموضّحة في README لتشغيل ISR.
+// الكاش التدريجي (ISR) يعمل عبر KV: الربط NEXT_INC_CACHE_KV أدناه.
+// إن أردت لاحقًا الكاش على R2 مع Durable Objects (tag cache/queue) راجع README.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ras-sectors",
@@ -11,6 +11,10 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  // كاش ISR لصفحات القطاعات (revalidate = 300) — يمنع إعادة التصيير لكل طلب
+  "kv_namespaces": [
+    { "binding": "NEXT_INC_CACHE_KV", "id": "c9e55c6f7d8f46e5bb1cddcff01055ae" }
+  ],
   "observability": {
     "enabled": true
   }

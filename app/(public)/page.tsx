@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Briefcase, FileText, GraduationCap, Trophy, type LucideIcon } from "lucide-react";
 import GlassCard from "@/components/GlassCard";
 import SectorCard from "@/components/SectorCard";
 import { getSectors } from "@/lib/data";
@@ -6,24 +7,24 @@ import { getSectors } from "@/lib/data";
 /** ISR: يُخزَّن HTML ويُحدَّث تلقائيًا كل 5 دقائق أو فورًا بعد أي تعديل إداري. */
 export const revalidate = 300;
 
-const FEATURES = [
+const FEATURES: { Icon: LucideIcon; title: string; text: string }[] = [
   {
-    icon: "📜",
+    Icon: FileText,
     title: "القوانين والمخالفات",
     text: "لوائح كل قطاع مع العقوبات والملاحظات، قابلة للتحديث من لوحة الإدارة.",
   },
   {
-    icon: "💼",
+    Icon: Briefcase,
     title: "منصة التوظيف",
     text: "دليل شامل لكل قطاع ثم اختبار توظيف إلكتروني بتصحيح فوري.",
   },
   {
-    icon: "🎓",
+    Icon: GraduationCap,
     title: "الدورات والشهادات",
     text: "سلايدات الدورات واختباراتها، وشهادة فورية برقم فريد و QR و PDF.",
   },
   {
-    icon: "🏆",
+    Icon: Trophy,
     title: "نظام المكافآت",
     text: "آليات التقدير والحوافز لكل قطاع، مع إمكانية التعديل من القيادة.",
   },
@@ -87,8 +88,11 @@ export default async function HomePage() {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {FEATURES.map((f) => (
             <GlassCard key={f.title} className="flex flex-col gap-2">
-              <span className="text-2xl" aria-hidden="true">
-                {f.icon}
+              <span
+                className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04]"
+                aria-hidden="true"
+              >
+                <f.Icon className="h-5 w-5 text-[#f9a825]" />
               </span>
               <h3 className="text-sm font-extrabold">{f.title}</h3>
               <p className="text-xs leading-relaxed text-[#94a3b8]">{f.text}</p>

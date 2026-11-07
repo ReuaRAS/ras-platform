@@ -1,6 +1,7 @@
 "use client";
 
 import Script from "next/script";
+import { ShieldCheck } from "lucide-react";
 import { useActionState, useEffect, useRef, useState } from "react";
 import { loginAction, type LoginState } from "@/lib/auth/actions";
 import { LOGIN_SECTORS } from "@/lib/auth/sector-map";
@@ -30,8 +31,8 @@ export default function LoginForm({ siteKey }: { siteKey: string }) {
       style={{ ["--sector-main" as string]: selected?.color ?? "#c62828" }}
     >
       <div className="mb-6 text-center">
-        <span className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c62828] to-[#7f1d1d] text-xl">
-          🛡️
+        <span className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#c62828] to-[#7f1d1d]">
+          <ShieldCheck className="h-6 w-6 text-white" aria-hidden="true" />
         </span>
         <h1 className="text-lg font-extrabold">لوحة إدارة القطاعات</h1>
         <p className="mt-1 text-[11px] text-[#94a3b8]">
@@ -53,7 +54,7 @@ export default function LoginForm({ siteKey }: { siteKey: string }) {
         >
           {LOGIN_SECTORS.map((s) => (
             <option key={s.slug} value={s.slug}>
-              {s.icon} {s.label}
+              {s.label}
             </option>
           ))}
         </select>
