@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { Briefcase, FileText, GraduationCap, Trophy, type LucideIcon } from "lucide-react";
+import {
+  Briefcase,
+  FileText,
+  GraduationCap,
+  Landmark,
+  Trophy,
+  type LucideIcon,
+} from "lucide-react";
 import GlassCard from "@/components/GlassCard";
 import SectorCard from "@/components/SectorCard";
 import { getSectors } from "@/lib/data";
@@ -46,7 +53,7 @@ export default async function HomePage() {
           className="mx-auto mb-5 block h-24 w-24 rounded-full object-cover shadow-[0_18px_45px_-18px_rgba(198,40,40,0.75)] ring-2 ring-[#f9a825]/25 sm:h-32 sm:w-32"
         />
         <span className="badge badge-warn mb-5">
-          <span aria-hidden="true">🏛️</span> محافظة الرس — FiveM
+          <Landmark className="h-3.5 w-3.5" aria-hidden="true" /> محافظة الرس — FiveM
         </span>
         <h1 className="mx-auto max-w-3xl text-3xl font-black leading-[1.3] sm:text-5xl">
           منصة <span className="gold-text">قطاعات</span> محافظة الرس
