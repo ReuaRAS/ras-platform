@@ -69,8 +69,9 @@ export default async function AdminTestsPage({
                 return (
                   <li
                     key={test.id}
-                    className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-white/[0.06] bg-[#0b0b0c] px-3 py-2"
+                    className="space-y-2 rounded-xl border border-white/[0.06] bg-[#0b0b0c] px-3 py-2"
                   >
+                    <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="text-[11px] font-bold">{test.title}</span>
@@ -99,6 +100,82 @@ export default async function AdminTestsPage({
                         <DangerButton>حذف</DangerButton>
                       </form>
                     </div>
+                    </div>
+
+                    <details className="rounded-xl border border-white/[0.06] bg-black/20 px-2 py-1.5">
+                      <summary className="cursor-pointer text-[10px] font-bold text-[#94a3b8]">
+                        تعديل الإعدادات
+                      </summary>
+                      <form action={saveTest} className="mt-2 space-y-2">
+                        <input type="hidden" name="id" value={test.id} />
+                        <Field label="العنوان">
+                          <input name="title" required defaultValue={test.title} className={inputCls} />
+                        </Field>
+                        <div className="grid gap-2 sm:grid-cols-2">
+                          <Field label="النوع">
+                            <select name="type" defaultValue={test.type} className={inputCls}>
+                              <option value="course">اختبار دورة</option>
+                              <option value="recruitment">اختبار توظيف</option>
+                            </select>
+                          </Field>
+                          <Field label="الدورة المرتبطة (اختياري)">
+                            <select name="course_id" defaultValue={test.course_id ?? ""} className={inputCls}>
+                              <option value="">— بدون ربط —</option>
+                              {courses.map((c) => (
+                                <option key={c.id} value={c.id}>
+                                  {c.title}
+                                </option>
+                              ))}
+                            </select>
+                          </Field>
+                        </div>
+                        <Field label="الوصف">
+                          <textarea
+                            name="description"
+                            rows={2}
+                            defaultValue={test.description ?? ""}
+                            className={inputCls}
+                          />
+                        </Field>
+                        <div className="grid grid-cols-3 gap-2">
+                          <Field label="النجاح %">
+                            <input
+                              name="pass_score"
+                              type="number"
+                              min={1}
+                              max={100}
+                              defaultValue={test.pass_score}
+                              className={inputCls}
+                            />
+                          </Field>
+                          <Field label="الدقائق">
+                            <input
+                              name="time_limit_minutes"
+                              type="number"
+                              min={1}
+                              max={240}
+                              defaultValue={test.time_limit_minutes}
+                              className={inputCls}
+                            />
+                          </Field>
+                          <Field label="الأسئلة لكل محاولة">
+                            <input
+                              name="questions_per_attempt"
+                              type="number"
+                              min={1}
+                              max={100}
+                              defaultValue={test.questions_per_attempt}
+                              className={inputCls}
+                            />
+                          </Field>
+                        </div>
+                        <label className="flex items-center gap-2 rounded-xl border border-white/[0.08] px-3 py-2 text-[11px]">
+                          <input type="checkbox" name="is_active" defaultChecked={test.is_active} />
+                          نشط
+                        </label>
+                        <SubmitButton className="!w-full">حفظ الإعدادات</SubmitButton>
+                      </form>
+                    </details>
                   </li>
                 );
               })}
