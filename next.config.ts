@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
 /**
  * إعدادات Next.js.
@@ -32,3 +33,6 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+// يجعل `next dev` يوفّر ربط Cloudflare المحلي (ASSETS وغيرها) الذي تحتاجه قراءة الخطوط في lib/pdf/generate.ts.
+initOpenNextCloudflareForDev({ configPath: "./freebuff.wrangler.jsonc" });

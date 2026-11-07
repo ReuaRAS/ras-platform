@@ -45,8 +45,15 @@ next-env.d.ts
 .freebuff/
 threads/
 
-# Local Netlify folder
-.netlify
+# Cloudflare / OpenNext محليًا
+.dev.vars
+.open-next
+.wrangler
+freebuff-sites-build
+freebuff.next.config.*
 
 # أسرار محلية
 .secrets/
+/freebuff-sites-build/
+/.open-next/
+/.wrangler/

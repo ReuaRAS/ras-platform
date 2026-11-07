@@ -18,7 +18,7 @@
 | قاعدة البيانات | Supabase (PostgreSQL + Auth + Storage + RLS) |
 | الشهادات | `pdf-lib` + `arabic-persian-reshaper` + `bidi-js` (تشكيل عربي) + `qrcode` |
 | التحقق من النماذج | Cloudflare Turnstile (اختياري في التطوير) |
-| النشر | Netlify (`@netlify/plugin-nextjs`) |
+| النشر | Cloudflare Workers (`@opennextjs/cloudflare`) |
 
 ---
 
@@ -250,23 +250,32 @@ node scripts/sync-google-slides.mjs # تنزيل عروض Google Slides كـ PDF
 
 ## 10) النشر
 
-### Netlify
+### Cloudflare Workers (OpenNext)
 
-المشروع مربوط حاليًا بمستودع GitHub (`ReuaRAS/ras-platform`) على Netlify، فأي
-`git push` على فرع `master` يُطلق بناءً جديدًا ونشرًا تلقائيًا على
-`https://ras-sectors.netlify.app`. من جهازك: `git push origin master`.
+الاستضافة على **Cloudflare** عبر محوّل `@opennextjs/cloudflare`، وملفات النشر
+المولّدة هي `freebuff.wrangler.jsonc` و`freebuff.open-next.config.ts` (لا تُحرَّر
+يدويًا؛ تُعاد توليدها عند كل نشر).
 
-لإعادة الربط من الصفر:
+النشر من هذا المجلد:
 
-1. ارفع المستودع إلى GitHub.
-2. Netlify → **Add new site → Import an existing project** → اختر المستودع.
-3. إعدادات البناء تُقرأ من `netlify.toml`:
-   - Build: `npm run build` — Publish: `.next` — Plugin: `@netlify/plugin-nextjs`.
-4. **Project configuration → Environment variables**: أضف نفس متغيرات `.env.local`
-   (مع `NEXT_PUBLIC_APP_URL` = رابط الموقع النهائي).
-5. بعد النشر: أضف رابط الموقع في **Supabase → Authentication → URL Configuration**
-   (Site URL + Redirect URLs) حتى تعمل الجلسات.
-6. للنشر اليدوي عند الحاجة: `netlify deploy --build --prod`.
+1. `npx @opennextjs/cloudflare build -c freebuff.wrangler.jsonc --openNextConfigPath freebuff.open-next.config.ts`
+   (يجب أن يشغّل هو `npm run build` بنفسه حتى يُنتج `.next/standalone`).
+2. إن تجاوزت حزمة العامل حد الرفع: `npx esbuild freebuff-sites-build/worker/deploy-entry.js --minify --format=esm --target=es2022 --legal-comments=none --outfile=<tmp>`
+   ثم استبدل الملف واحذف `deploy-entry.js.map`.
+3. النشر عبر أداة Sites في هذا المسار (بيئة `preview` أو `production`).
+
+متغيرات البيئة على Cloudflare:
+
+- `NEXT_PUBLIC_*` تُدمج وقت البناء (من `.env.local`)، وأهمّها `NEXT_PUBLIC_APP_URL`
+  = رابط الموقع الفعلي على `*.freebuff.page` (يُستخدم في روابط تحقق الشهادات).
+- `SUPABASE_SERVICE_ROLE_KEY` سِرّ على السيرفر فقط، يُضاف من لوحة Sites → Secrets،
+  ولا يوضع في الكود أو المتغيّرات العامة.
+
+قراءة الخطوط في `lib/pdf/generate.ts`: على Workers تُقرأ من ربط `ASSETS` الثابت،
+ومحليًا من `public/fonts` عبر نظام الملفات.
+
+بعد النشر: أضف رابط الموقع في **Supabase → Authentication → URL Configuration**
+(Site URL + Redirect URLs) حتى تعمل الجلسات.
 
 ### فحص المسار على الاستضافة
 

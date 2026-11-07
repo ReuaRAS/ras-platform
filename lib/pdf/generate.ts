@@ -30,21 +30,43 @@ function hexToRgb(hex: string) {
   );
 }
 
+/**
+ * يقرأ ملف خط من public/fonts بطريقة تعمل على السيرفر العادي وعلى Cloudflare Workers
+ * (حيث لا يوجد نظام ملفات: الخطوط تُقدَّم عبر ربط ASSETS الثابت).
+ */
+async function readFont(name: string): Promise<Uint8Array | null> {
+  // 1) Cloudflare Workers: الأصول الثابتة عبر ASSETS
+  try {
+    const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+    type AssetFetcher = { fetch: (input: Request) => Promise<Response> };
+    const assets = (getCloudflareContext().env as { ASSETS?: AssetFetcher }).ASSETS;
+    if (assets) {
+      const res = await assets.fetch(new Request(`https://assets.internal/fonts/${name}`));
+      if (res.ok) return new Uint8Array(await res.arrayBuffer());
+    }
+  } catch {
+    // ليس على Workers (أو لم يُهيّأ السياق) — ننتقل للنظام المحلي
+  }
+
+  // 2) سيرفر Node: القراءة من القرص
+  try {
+    const buf = await fs.readFile(path.join(process.cwd(), "public", "fonts", name));
+    return new Uint8Array(buf);
+  } catch {
+    return null;
+  }
+}
+
 async function loadFonts(doc: PDFDocument): Promise<{
   regular: PDFFont;
   bold: PDFFont;
 }> {
-  // خط عربي (Tajawal) من public/fonts — يُضمَّن في ملف الـPDF
-  const dir = path.join(process.cwd(), "public", "fonts");
   const readFirst = async (names: string[]) => {
     for (const name of names) {
-      try {
-        return await fs.readFile(path.join(dir, name));
-      } catch {
-        // جرّب الاسم التالي
-      }
+      const data = await readFont(name);
+      if (data) return data;
     }
-    throw new Error(`لم يُعثر على خط عربي في ${dir} (${names.join(" / ")})`);
+    throw new Error(`لم يُعثر على خط عربي (${names.join(" / ")})`);
   };
 
   try {
@@ -54,8 +76,8 @@ async function loadFonts(doc: PDFDocument): Promise<{
     ]);
     // subset:true يسقط معظم الحروف العربية لهذا الخط في قارئات PDF، فنضمّن الخط كاملًا
     return {
-      regular: await doc.embedFont(new Uint8Array(reg), { subset: false }),
-      bold: await doc.embedFont(new Uint8Array(bold), { subset: false }),
+      regular: await doc.embedFont(reg, { subset: false }),
+      bold: await doc.embedFont(bold, { subset: false }),
     };
   } catch {
     // احتياطي: خط لاتيني (قد لا يدعم العربية) — يمنع فشل إصدار الشهادة

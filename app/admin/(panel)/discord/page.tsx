@@ -1,5 +1,6 @@
 import { requirePermission } from "@/lib/auth/guard";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { APP_URL } from "@/lib/supabase/env";
 import type { DiscordEvent, Sector } from "@/lib/types";
 import { Alert, Badge, EmptyState, PageHeader, Panel } from "@/components/admin/ui";
 
@@ -47,8 +48,8 @@ export default async function AdminDiscordPage({
 
       {!hasKey ? (
         <Alert tone="info">
-          أضف المتغير <code dir="ltr">DISCORD_PUBLIC_KEY</code> في بيئة النشر (Netlify → Environment
-          variables) بقيمة Public Key من صفحة تطبيق Discord. حتى ذلك الحين يرفض المسار كل الطلبات
+          أضف المتغير <code dir="ltr">DISCORD_PUBLIC_KEY</code> في بيئة النشر (Cloudflare → Secrets)
+          بقيمة Public Key من صفحة تطبيق Discord. حتى ذلك الحين يرفض المسار كل الطلبات
           بالرمز 503، ولا يُسجَّل أي حدث.
         </Alert>
       ) : null}
@@ -58,7 +59,7 @@ export default async function AdminDiscordPage({
           <li>
             أنشئ تطبيقًا في Discord Developer Portal، وضع رابط التفاعل:{" "}
             <code dir="ltr" className="text-[var(--sector-light)]">
-              https://ras-sectors.netlify.app/api/discord/webhook
+              {APP_URL}/api/discord/webhook
             </code>
           </li>
           <li>
