@@ -259,19 +259,20 @@ node scripts/sync-google-slides.mjs # تنزيل عروض Google Slides كـ PDF
 الإعداد لمرة واحدة:
 
 1. أنشئ حساب Cloudflare مجانيًا، ثم **My Profile → API Tokens → Create Token**
-   بقالب *Edit Cloudflare Workers* مع صلاحية **Workers R2 Storage: Edit**.
+   بقالب *Edit Cloudflare Workers*.
 2. في GitHub → **Settings → Secrets and variables → Actions**:
    - Secrets: `CLOUDFLARE_API_TOKEN` و`CLOUDFLARE_ACCOUNT_ID`
      و`SUPABASE_SERVICE_ROLE_KEY` (يُضبط على العامل بعد كل نشر تلقائيًا).
+   - Account ID الحالي: `7045c92d8af12f63f765f3129eed4542`.
    - Variables: `NEXT_PUBLIC_SUPABASE_URL` و`NEXT_PUBLIC_SUPABASE_ANON_KEY`
      و`NEXT_PUBLIC_APP_URL` (رابط الموقع النهائي) و`NEXT_PUBLIC_TURNSTILE_SITE_KEY`
      إن استُخدم Turnstile.
-3. مخزن الكاش `ras-platform-cache` ينشئه سير العمل تلقائيًا في أول تشغيل
-   (أو يدويًا: `npx wrangler r2 bucket create ras-platform-cache`).
-4. رابط الموقع: `https://ras-platform.<اسم-حسابك>.workers.dev` (اسم الحساب الفرعي
-   يظهر في **Workers & Pages** بعد أول استخدام؛ ضعه في `NEXT_PUBLIC_APP_URL` قبل
-   أول نشر)، أو اربط دومينًا مخصصًا من **Settings → Domains & Routes** وأعد النشر
-   بالرابط الجديد.
+3. رابط الموقع الحالي: **https://ras-sectors.lvlone-02.workers.dev** — اسم العامل
+   من `wrangler.jsonc` (`ras-sectors`)؛ لتغييره غيّر `name` وأعد النشر. ولدومين
+   خاص: **Settings → Domains & Routes** ثم أعد البناء بـ `NEXT_PUBLIC_APP_URL` الجديد.
+4. الكاش التدريجي (ISR) معطّل لأن R2 غير مفعّل على الحساب. بعد تفعيل R2 من لوحة
+   Cloudflare أضف `r2_buckets` + `durable_objects` + `migrations` كما في تعليقات
+   الملفين `wrangler.jsonc` و`open-next.config.ts` لتنشيطه.
 
 النشر يدويًا من هذا المجلد عند الحاجة: `npm run cf:build` ثم `npm run cf:deploy`،
 وللمعاينة المحلية على workerd: `npm run cf:preview`.
