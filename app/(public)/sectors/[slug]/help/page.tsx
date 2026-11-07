@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { HelpCircle } from "lucide-react";
 import SectorHeader from "@/components/SectorHeader";
 import { getSectorBySlug } from "@/lib/data";
 import { createPublicSupabase } from "@/lib/supabase/public";
@@ -41,7 +42,10 @@ export default async function SectorHelpPage({ params }: { params: Promise<{ slu
 
       <div className="mt-6">
         <div className="mb-4">
-          <h2 className="text-lg font-extrabold">❓ الأسئلة الشائعة</h2>
+          <h2 className="flex items-center gap-2 text-lg font-extrabold">
+            <HelpCircle className="h-5 w-5 text-[var(--sector-light)]" aria-hidden="true" />
+            الأسئلة الشائعة
+          </h2>
           <p className="mt-1 text-xs text-[#94a3b8]">
             أجوبة {sector.name} على أكثر ما يُسأل عنه. لم تجد إجابتك؟ تواصل مع قيادة القطاع عبر ديسكورد.
           </p>

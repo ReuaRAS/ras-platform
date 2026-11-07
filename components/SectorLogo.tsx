@@ -1,0 +1,48 @@
+import { getSectorMeta } from "@/lib/sectors";
+import type { Sector } from "@/lib/types";
+
+/**
+ * الشعار الرسمي للقطاع (من `sectors.logo_url` أو من `lib/sectors.ts`).
+ * لا يُستخدم أي رمز تعبيري بديلًا عن الشعار: عند غياب الشعار تُعرض شارة كود القطاع.
+ */
+export default function SectorLogo({
+  sector,
+  size = 64,
+  className = "",
+}: {
+  sector: Sector;
+  size?: number;
+  className?: string;
+}) {
+  const meta = getSectorMeta(sector.slug);
+  const src = sector.logo_url || meta?.logo || null;
+
+  if (!src) {
+    return (
+      <span
+        aria-hidden="true"
+        className={`flex shrink-0 items-center justify-center rounded-2xl border border-white/25 bg-black/30 font-extrabold text-white ${className}`}
+        style={{ width: size, height: size, fontSize: Math.round(size * 0.26) }}
+      >
+        {sector.sector_code}
+      </span>
+    );
+  }
+
+  return (
+    <span
+      className={`relative flex shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white p-1 ring-1 ring-white/30 shadow-[0_10px_25px_-12px_rgba(0,0,0,0.7)] ${className}`}
+      style={{ width: size, height: size }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt={`شعار ${sector.name}`}
+        width={size}
+        height={size}
+        className="h-full w-full rounded-xl object-contain"
+        loading="lazy"
+      />
+    </span>
+  );
+}

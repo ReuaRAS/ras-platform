@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Briefcase, FileText, GraduationCap, Trophy } from "lucide-react";
 import { GlassLinkCard } from "@/components/GlassCard";
 import SectorHeader from "@/components/SectorHeader";
 import {
@@ -36,28 +37,28 @@ export default async function SectorOverviewPage({
   const cards = [
     {
       href: `${base}/laws`,
-      icon: "📜",
+      icon: FileText,
       title: "القوانين",
       count: `${laws.length} قانون`,
       desc: "اللوائح والأنظمة والمخالفات والعقوبات المعتمدة.",
     },
     {
       href: `${base}/recruitment`,
-      icon: "💼",
+      icon: Briefcase,
       title: "التوظيف",
       count: recruitment.is_open ? "مفتوح" : "مغلق حاليًا",
       desc: "الدليل الشامل وشروط التقديم واختبار التوظيف.",
     },
     {
       href: `${base}/courses`,
-      icon: "🎓",
+      icon: GraduationCap,
       title: "الدورات",
       count: `${courses.length} دورة`,
       desc: "سلايدات الدورات واختباراتها وشهاداتها.",
     },
     {
       href: `${base}/rewards`,
-      icon: "🏆",
+      icon: Trophy,
       title: "المكافآت",
       count: `${rewards.length} مكافأة`,
       desc: "آليات التقدير والحوافز داخل القطاع.",
@@ -72,8 +73,11 @@ export default async function SectorOverviewPage({
         {cards.map((c) => (
           <GlassLinkCard key={c.href} href={c.href} className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
-              <span className="text-2xl" aria-hidden="true">
-                {c.icon}
+              <span
+                className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04]"
+                aria-hidden="true"
+              >
+                <c.icon className="h-[18px] w-[18px] text-[var(--sector-light)]" />
               </span>
               <span className="text-[10px] font-bold text-[var(--sector-light)]">{c.count}</span>
             </div>

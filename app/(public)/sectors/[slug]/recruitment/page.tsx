@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { Briefcase } from "lucide-react";
 import SectorHeader from "@/components/SectorHeader";
 import { getRecruitment, getSectorBySlug, getTests } from "@/lib/data";
 
@@ -38,7 +39,10 @@ export default async function RecruitmentPage({
         <div className="space-y-4">
           <div className="glass-card rounded-2xl p-5 sm:p-7">
             <div className="mb-3 flex flex-wrap items-center gap-2">
-              <h2 className="text-lg font-extrabold">💼 منصة التوظيف</h2>
+              <h2 className="flex items-center gap-2 text-lg font-extrabold">
+                <Briefcase className="h-5 w-5 text-[var(--sector-light)]" aria-hidden="true" />
+                منصة التوظيف
+              </h2>
               <span className={`badge ${recruitment.is_open ? "badge-success" : "badge-muted"}`}>
                 {recruitment.is_open ? "التقديم مفتوح" : "التقديم مغلق"}
               </span>

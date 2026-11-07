@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { Medal } from "lucide-react";
 import SectorHeader from "@/components/SectorHeader";
 import { getSectorBySlug } from "@/lib/data";
 import { createAdminClient } from "@/lib/supabase/admin";
@@ -61,7 +62,10 @@ export default async function SectorLeaderboardPage({
 
       <div className="mt-6">
         <div className="mb-4">
-          <h2 className="text-lg font-extrabold">🏅 لوحة الصدارة</h2>
+          <h2 className="flex items-center gap-2 text-lg font-extrabold">
+            <Medal className="h-5 w-5 text-[var(--sector-light)]" aria-hidden="true" />
+            لوحة الصدارة
+          </h2>
           <p className="mt-1 text-xs text-[#94a3b8]">
             أعلى {rows.length > 0 ? Math.min(rows.length, 50) : 20} عضوًا نقاطًا في {sector.name}.
             تُعرض المعرّفات مختصرة حفاظًا على الخصوصية.

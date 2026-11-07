@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { Trophy } from "lucide-react";
 import SectorHeader from "@/components/SectorHeader";
 import { getRewards, getSectorBySlug } from "@/lib/data";
 
@@ -29,7 +30,10 @@ export default async function RewardsPage({ params }: { params: Promise<{ slug: 
 
       <div className="mt-6">
         <div className="mb-4">
-          <h2 className="text-lg font-extrabold">🏆 نظام المكافآت</h2>
+          <h2 className="flex items-center gap-2 text-lg font-extrabold">
+            <Trophy className="h-5 w-5 text-[var(--sector-light)]" aria-hidden="true" />
+            نظام المكافآت
+          </h2>
           <p className="mt-1 text-xs text-[#94a3b8]">
             الحوافز وآليات التقدير داخل {sector.name} — {rewards.length} مكافأة.
           </p>

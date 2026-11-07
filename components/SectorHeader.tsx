@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SectorLogo from "@/components/SectorLogo";
 import { getSectorMeta } from "@/lib/sectors";
 import { getTheme, themeStyle } from "@/lib/data";
 import type { Sector } from "@/lib/types";
@@ -34,23 +35,7 @@ export default function SectorHeader({
           style={{ background: theme.light }}
         />
         <div className="relative flex flex-wrap items-center gap-4">
-          {meta?.logo ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={meta.logo}
-              alt={`شعار ${sector.name}`}
-              width={64}
-              height={64}
-              className="h-16 w-16 shrink-0 object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,0.5)]"
-            />
-          ) : (
-            <span
-              className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-black/25 text-3xl"
-              aria-hidden="true"
-            >
-              {meta?.icon ?? "🏛️"}
-            </span>
-          )}
+          <SectorLogo sector={sector} size={72} />
           <div className="min-w-0">
             <div className="mb-1 flex items-center gap-2 text-[11px] font-bold text-white/70">
               <span className="rounded-full bg-black/25 px-2 py-0.5">{sector.sector_code}</span>

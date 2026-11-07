@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Megaphone } from "lucide-react";
 import EventCountdown from "@/components/EventCountdown";
 import SectorHeader from "@/components/SectorHeader";
 import { getSectorBySlug } from "@/lib/data";
@@ -49,7 +50,10 @@ export default async function SectorAnnouncementsPage({
 
       <div className="mt-6">
         <div className="mb-4">
-          <h2 className="text-lg font-extrabold">📣 الإعلانات</h2>
+          <h2 className="flex items-center gap-2 text-lg font-extrabold">
+            <Megaphone className="h-5 w-5 text-[var(--sector-light)]" aria-hidden="true" />
+            الإعلانات
+          </h2>
           <p className="mt-1 text-xs text-[#94a3b8]">
             آخر إعلانات وفعاليات {sector.name}. تُحدَّث من لوحة الإدارة.
           </p>

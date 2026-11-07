@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { GraduationCap } from "lucide-react";
 import SectorHeader from "@/components/SectorHeader";
 import { getCourses, getRecruitment, getSectorBySlug } from "@/lib/data";
 
@@ -32,7 +33,10 @@ export default async function CoursesPage({ params }: { params: Promise<{ slug: 
       <div className="mt-6">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 className="text-lg font-extrabold">🎓 دورات {sector.name}</h2>
+            <h2 className="flex items-center gap-2 text-lg font-extrabold">
+              <GraduationCap className="h-5 w-5 text-[var(--sector-light)]" aria-hidden="true" />
+              دورات {sector.name}
+            </h2>
             <p className="mt-1 text-xs text-[#94a3b8]">
               كل دورة تحتوي سلايدات واختبارًا، وبعد الاجتياز تصدر شهادة برقم فريد.
             </p>
@@ -62,8 +66,11 @@ export default async function CoursesPage({ params }: { params: Promise<{ slug: 
                 className="glass-card glass-card-hover flex flex-col rounded-2xl p-5"
               >
                 <div className="mb-2 flex items-center justify-between">
-                  <span className="text-2xl" aria-hidden="true">
-                    🎓
+                  <span
+                    className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04]"
+                    aria-hidden="true"
+                  >
+                    <GraduationCap className="h-[18px] w-[18px] text-[var(--sector-light)]" />
                   </span>
                   <span className="badge badge-muted font-mono text-[10px]">
                     {course.certificate_prefix}

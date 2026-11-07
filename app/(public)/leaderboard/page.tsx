@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { Medal } from "lucide-react";
 import { getSectors } from "@/lib/data";
 import { createAdminClient } from "@/lib/supabase/admin";
 import type { MemberXp, Sector, XpLevel } from "@/lib/types";
@@ -44,7 +45,10 @@ export default async function LeaderboardPage() {
   return (
     <div className="mx-auto max-w-4xl">
       <header className="glass-panel rounded-3xl p-6 text-center">
-        <h1 className="text-2xl font-extrabold">🏅 لوحة الصدارة</h1>
+        <h1 className="flex items-center gap-2 text-2xl font-extrabold">
+          <Medal className="h-6 w-6 text-[#f9a825]" aria-hidden="true" />
+          لوحة الصدارة
+        </h1>
         <p className="mt-2 text-xs leading-relaxed text-[#94a3b8]">
           أعلى الأعضاء نقاطًا في كل قطاع. تُضاف النقاط تلقائيًا عند إصدار الشهادات، وتُعدَّل يدويًا من
           قيادة القطاع. تُعرض المعرّفات مختصرة حفاظًا على الخصوصية.

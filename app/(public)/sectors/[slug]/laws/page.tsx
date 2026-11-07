@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { ScrollText } from "lucide-react";
 import LawsList from "@/components/LawsList";
 import SectorHeader from "@/components/SectorHeader";
 import { getLaws, getSectorBySlug } from "@/lib/data";
@@ -30,7 +31,10 @@ export default async function LawsPage({ params }: { params: Promise<{ slug: str
 
       <div className="mt-6">
         <div className="mb-4">
-          <h2 className="text-lg font-extrabold">📜 قوانين {sector.name}</h2>
+          <h2 className="flex items-center gap-2 text-lg font-extrabold">
+            <ScrollText className="h-5 w-5 text-[var(--sector-light)]" aria-hidden="true" />
+            قوانين {sector.name}
+          </h2>
           <p className="mt-1 text-xs text-[#94a3b8]">
             {laws.length} قانونًا — اللوائح والعقوبات المعتمدة داخل القطاع.
           </p>
