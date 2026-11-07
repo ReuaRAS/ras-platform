@@ -250,26 +250,41 @@ node scripts/sync-google-slides.mjs # تنزيل عروض Google Slides كـ PDF
 
 ## 10) النشر
 
-### Cloudflare Workers (OpenNext)
+### Cloudflare Workers (OpenNext) — نشر تلقائي من GitHub
 
-الاستضافة على **Cloudflare** عبر محوّل `@opennextjs/cloudflare`، وملفات النشر
-المولّدة هي `freebuff.wrangler.jsonc` و`freebuff.open-next.config.ts` (لا تُحرَّر
-يدويًا؛ تُعاد توليدها عند كل نشر).
+الاستضافة على **Cloudflare** عبر `@opennextjs/cloudflare`. ملفا النشر الثابتان في
+المستودع هما `wrangler.jsonc` و`open-next.config.ts`، وأي `git push` على `master`
+يُطلق `.github/workflows/deploy-cloudflare.yml` الذي يبني ثم ينفّذ `wrangler deploy`.
 
-النشر من هذا المجلد:
+الإعداد لمرة واحدة:
 
-1. `npx @opennextjs/cloudflare build -c freebuff.wrangler.jsonc --openNextConfigPath freebuff.open-next.config.ts`
-   (يجب أن يشغّل هو `npm run build` بنفسه حتى يُنتج `.next/standalone`).
-2. إن تجاوزت حزمة العامل حد الرفع: `npx esbuild freebuff-sites-build/worker/deploy-entry.js --minify --format=esm --target=es2022 --legal-comments=none --outfile=<tmp>`
-   ثم استبدل الملف واحذف `deploy-entry.js.map`.
-3. النشر عبر أداة Sites في هذا المسار (بيئة `preview` أو `production`).
+1. أنشئ حساب Cloudflare مجانيًا، ثم **My Profile → API Tokens → Create Token**
+   بقالب *Edit Cloudflare Workers* مع صلاحية **Workers R2 Storage: Edit**.
+2. في GitHub → **Settings → Secrets and variables → Actions**:
+   - Secrets: `CLOUDFLARE_API_TOKEN` و`CLOUDFLARE_ACCOUNT_ID`.
+   - Variables: `NEXT_PUBLIC_SUPABASE_URL` و`NEXT_PUBLIC_SUPABASE_ANON_KEY`
+     و`NEXT_PUBLIC_APP_URL` (رابط الموقع النهائي) و`NEXT_PUBLIC_TURNSTILE_SITE_KEY`
+     إن استُخدم Turnstile.
+3. أنشئ مخزن الكاش مرة واحدة: `npx wrangler r2 bucket create ras-platform-cache`
+   (سير العمل يحاول إنشاءه أيضًا ويتجاهل الخطأ إن كان موجودًا).
+4. أضف أسرار التشغيل في **Cloudflare → Workers & Pages → ras-platform → Settings →
+   Variables and Secrets**: `SUPABASE_SERVICE_ROLE_KEY` (نوع Secret)،
+   و`NEXT_PUBLIC_*` إن احتجتها وقت التشغيل.
+5. رابط الموقع: `https://ras-platform.<اسم-حسابك>.workers.dev`، أو اربط دومينًا
+   مخصصًا من **Settings → Domains & Routes**.
 
-متغيرات البيئة على Cloudflare:
+النشر يدويًا من هذا المجلد عند الحاجة: `npm run cf:build` ثم `npm run cf:deploy`،
+وللمعاينة المحلية على workerd: `npm run cf:preview`.
 
-- `NEXT_PUBLIC_*` تُدمج وقت البناء (من `.env.local`)، وأهمّها `NEXT_PUBLIC_APP_URL`
-  = رابط الموقع الفعلي على `*.freebuff.page` (يُستخدم في روابط تحقق الشهادات).
-- `SUPABASE_SERVICE_ROLE_KEY` سِرّ على السيرفر فقط، يُضاف من لوحة Sites → Secrets،
-  ولا يوضع في الكود أو المتغيّرات العامة.
+> استضافة Freebuff Sites المُدارة ما زالت تعمل عبر `freebuff.wrangler.jsonc`
+> و`freebuff.open-next.config.ts` (مولّدان، لا تُحرّرهما) ولا يوجد فيها ربط GitHub؛
+> النشر إليها يجري من هذه المساحة بأداة Sites.
+
+متغيرات البيئة:
+
+- `NEXT_PUBLIC_*` تُدمج وقت البناء، وأهمّها `NEXT_PUBLIC_APP_URL` (يُستخدم في روابط
+  تحقق الشهادات) — يجب أن يطابق الرابط المنشور فعليًا.
+- `SUPABASE_SERVICE_ROLE_KEY` سِرّ على السيرفر فقط، ولا يوضع في الكود أو المتغيّرات العامة.
 
 قراءة الخطوط في `lib/pdf/generate.ts`: على Workers تُقرأ من ربط `ASSETS` الثابت،
 ومحليًا من `public/fonts` عبر نظام الملفات.
