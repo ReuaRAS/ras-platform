@@ -1,7 +1,14 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import fontkit from "@pdf-lib/fontkit";
-import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFPage } from "pdf-lib";
+import {
+  PDFDocument,
+  StandardFonts,
+  rgb,
+  type PDFFont,
+  type PDFImage,
+  type PDFPage,
+} from "pdf-lib";
 import QRCode from "qrcode";
 import { shapeArabic } from "./arabic";
 
@@ -15,7 +22,17 @@ export type CertificatePdfInput = {
   issuedAt: Date;
   verifyUrl: string;
   sectorColor?: string;
+  sectorSlug?: string;
   organization?: string;
+};
+
+/** ربط كود القطاع بملف شعاره حين لا يُمرَّر الـ slug */
+const SECTOR_SLUG_BY_CODE: Record<string, string> = {
+  RCA: "red-crescent",
+  MG: "mechanic-garage",
+  PS: "public-security",
+  FS: "facility-security",
+  SB: "security-brigades",
 };
 
 const A4_LANDSCAPE = { width: 841.89, height: 595.28 };
@@ -31,17 +48,17 @@ function hexToRgb(hex: string) {
 }
 
 /**
- * يقرأ ملف خط من public/fonts بطريقة تعمل على السيرفر العادي وعلى Cloudflare Workers
- * (حيث لا يوجد نظام ملفات: الخطوط تُقدَّم عبر ربط ASSETS الثابت).
+ * يقرأ ملفًا من public/** بطريقة تعمل على السيرفر العادي وعلى Cloudflare Workers
+ * (حيث لا يوجد نظام ملفات: الأصول الثابتة تُقدَّم عبر ربط ASSETS).
  */
-async function readFont(name: string): Promise<Uint8Array | null> {
+async function readAsset(relativePath: string): Promise<Uint8Array | null> {
   // 1) Cloudflare Workers: الأصول الثابتة عبر ASSETS
   try {
     const { getCloudflareContext } = await import("@opennextjs/cloudflare");
     type AssetFetcher = { fetch: (input: Request) => Promise<Response> };
     const assets = (getCloudflareContext().env as { ASSETS?: AssetFetcher }).ASSETS;
     if (assets) {
-      const res = await assets.fetch(new Request(`https://assets.internal/fonts/${name}`));
+      const res = await assets.fetch(new Request(`https://assets.internal/${relativePath}`));
       if (res.ok) return new Uint8Array(await res.arrayBuffer());
     }
   } catch {
@@ -50,8 +67,27 @@ async function readFont(name: string): Promise<Uint8Array | null> {
 
   // 2) سيرفر Node: القراءة من القرص
   try {
-    const buf = await fs.readFile(path.join(process.cwd(), "public", "fonts", name));
+    const buf = await fs.readFile(path.join(process.cwd(), "public", ...relativePath.split("/")));
     return new Uint8Array(buf);
+  } catch {
+    return null;
+  }
+}
+
+/** خط من public/fonts */
+const readFont = (name: string) => readAsset(`fonts/${name}`);
+
+/** شعار القطاع الرسمي (PNG) — يُرسم داخل الشهادة بدل الشعار النصي */
+async function loadSectorLogo(
+  doc: PDFDocument,
+  input: CertificatePdfInput,
+): Promise<PDFImage | null> {
+  const slug = input.sectorSlug || SECTOR_SLUG_BY_CODE[input.sectorCode?.toUpperCase() ?? ""];
+  if (!slug) return null;
+  const data = await readAsset(`sectors/${slug}.png`);
+  if (!data) return null;
+  try {
+    return await doc.embedPng(data);
   } catch {
     return null;
   }
@@ -182,11 +218,31 @@ export async function generateCertificatePdf(
     font: bold,
     color: rgb(1, 1, 1),
   });
-  // القطاع — أعلى اليمين
+
+  // شعار القطاع الرسمي — أعلى اليمين داخل شارة بيضاء، والنص ينسحب يساره
+  const sectorLogo = await loadSectorLogo(doc, input);
+  let sectorLabelRight = W - 52;
+  if (sectorLogo) {
+    const badge = 40;
+    const bx = W - 32 - 10 - badge;
+    const by = H - 47 - badge / 2;
+    page.drawRectangle({
+      x: bx,
+      y: by,
+      width: badge,
+      height: badge,
+      color: rgb(1, 1, 1),
+      borderColor: rgb(0.78, 0.63, 0.2),
+      borderWidth: 0.7,
+    });
+    page.drawImage(sectorLogo, { x: bx + 2.5, y: by + 2.5, width: badge - 5, height: badge - 5 });
+    sectorLabelRight = bx - 12;
+  }
+
   drawRightAligned(
     page,
     `${input.sectorName} — ${input.sectorCode}`,
-    W - 52,
+    sectorLabelRight,
     H - 55,
     bold,
     13,

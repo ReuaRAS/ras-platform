@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
   const { data: sector } = await admin
     .from("sectors")
-    .select("name, sector_code, primary_color")
+    .select("name, sector_code, primary_color, slug")
     .eq("id", cert.sector_id)
     .maybeSingle();
 
@@ -48,6 +48,7 @@ export async function POST(req: Request) {
     courseTitle: cert.course_title,
     sectorName: sector?.name ?? "",
     sectorCode: sector?.sector_code ?? "",
+    sectorSlug: sector?.slug,
     percentage: Number(cert.percentage),
     issuedAt: new Date(cert.issued_at),
     verifyUrl,
